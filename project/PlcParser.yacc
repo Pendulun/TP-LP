@@ -21,9 +21,17 @@
  (*ORDEM DE PRECEDENCIA!!!*)
 %nonterm Prog | Decl | Expr | AtomExpr | AppExpr | Const | Comps | MatchExpr | CondExpr | Args | Params | TypedVar | Type | AtomType | Types
 
-%right SEMIC DARROW DCOLON 
-%left ELSE AND EQ NOTEQ LESS LEQARROW PLUS MINUS MULTI DIV LBRACKET
-%nonassoc IF NOT HD TL ISE PRINT NAT 
+%right SEMIC DARROW 
+%nonassoc IF
+%left ELSE
+%left AND
+%left EQ NOTEQ
+%left LESS LEQARROW
+%right DCOLON
+%left PLUS MINUS
+%left MULTI DIV
+%nonassoc NOT HD TL ISE PRINT NAME
+%left LBRACKET
 
 %eop EOF
 
