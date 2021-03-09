@@ -14,7 +14,7 @@ fun strToInt s =
 		SOME i => i
 		| NONE => raise Fail ("Could not convert string '" ^ s ^ "' to integer")
 
-(*Verifica se o identifier se refere a uma palavra reservada*)
+(*Verifica se o identifier se refere a uma palavra reservada ou não*)
 fun keyword (s,lpos,rpos) = 
 	case s of
 	"if"  => (IF(lpos,rpos))
@@ -98,7 +98,6 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
 "()" => (NILV(yypos, yypos));
 
-"<=" => (LEQARROW(yypos, yypos));
 "=>" => (REQARROW(yypos, yypos));
 "->" => (DRARROW(yypos, yypos));
 

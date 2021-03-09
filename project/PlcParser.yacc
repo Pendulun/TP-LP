@@ -15,7 +15,7 @@
 		| TRUE | FALSE
 		| HD | TL | ISE | MATCH | WITH | PRINT
 		| VAR | FUN | REC
-		| FN | LEQARROW | REQARROW | END | DRARROW 
+		| FN | REQARROW | END | DRARROW 
 		| EOF
 		| NAME of string | CINT of int
 
