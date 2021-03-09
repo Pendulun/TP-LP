@@ -19,7 +19,7 @@
 		| EOF
 		| NAME of string | CINT of int
 
-%nonterm Prog | Decl | Expr | AtomExpr | AppExpr | Const | Comps | MatchExpr | CondExpr | Args | Params | TypedVar | Type | AtomType | Types
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of plcVal | Comps of expr | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType 
 
 %right SEMIC DARROW 
 %nonassoc IF
