@@ -20,7 +20,7 @@ fun keyword (s,lpos,rpos) =
 	"if"  => (IF(lpos,rpos))
 	| "then" => (THEN(lpos,rpos))
 	| "else" => (ELSE(lpos,rpos))
-	| "nil" => (NILT(lpos,rpos))
+	| "Nil" => (NILT(lpos,rpos))
 	| "Bool" => (BOOLT(lpos,rpos))
 	| "Int" => (INTT(lpos,rpos))
 	| "true" => (TRUE(lpos,rpos))
@@ -100,5 +100,8 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
 "=>" => (REQARROW(yypos, yypos));
 "->" => (DRARROW(yypos, yypos));
+
+"|" => (PIPE(yypos,yypos))
+"_" => (UNDER(yypos,yypos))
 
 (*NÃO SEI SE ALGUMA REGRA É ESCRITA PARA O EOF*)
