@@ -20,7 +20,7 @@
 		| PIPE | UNDER
 		| NAME of string | CINT of int
 
-%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
 
 %right SEMIC DARROW 
 %nonassoc IF
@@ -78,10 +78,10 @@ Expr : AtomExpr (AtomExpr)
 
 AtomExpr : Const (Const)
 	| NAME (???)
-	| LBRACE Prog RBRACE (???)
-	| LPAREN Expr RPAREN ()
-	| LPAREN Comps RPAREN ()
-	| FN Args REQARROW Expr END (???)
+	| LBRACE Prog RBRACE (Prog)
+	| LPAREN Expr RPAREN (Expr)
+	| LPAREN Comps RPAREN (List(Comps))
+	| FN Args REQARROW Expr END (makeAnon(Args, Expr))
 
 AppExpr : AtomExpr AtomExpr ()
 	| AppExpr AtomExpr ()
@@ -92,8 +92,8 @@ Const : TRUE (BoolV(true))
 	| NILV ()
 	| LPAREN Type LBRACKET RBRACKET RPAREN (ESeq(Type))
 
-Comps : Expr COMMA Expr ()
-	| Expr COMMA Comps ()
+Comps : Expr COMMA Expr (Expr1::Expr2)
+	| Expr COMMA Comps (Expr::Comps)
 
 MatchExpr : END ()
 	| (*???*)
@@ -119,5 +119,5 @@ AtomType : NILT (ListT([]))
 	| INTT (IntT)
 	| LPAREN Type RPAREN (Type)
 
-Types : Type COMMA Type (ListT(Type1::Type2::[]))
+Types : Type COMMA Type (ListT(Type1::Type2))
 	| Type COMMA Types (ListT(Type::Types))
