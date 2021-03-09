@@ -77,14 +77,14 @@ Expr : AtomExpr (AtomExpr)
 	| Expr LBRACKET CINT RBRACKET (Item(CINT, Expr))
 
 AtomExpr : Const (Const)
-	| NAME (???)
+	| NAME (Var(NAME))
 	| LBRACE Prog RBRACE (Prog)
 	| LPAREN Expr RPAREN (Expr)
 	| LPAREN Comps RPAREN (List(Comps))
 	| FN Args REQARROW Expr END (makeAnon(Args, Expr))
 
-AppExpr : AtomExpr AtomExpr ()
-	| AppExpr AtomExpr ()
+AppExpr : AtomExpr AtomExpr (Call(AtomExpr1, AtomExpr2))
+	| AppExpr AtomExpr (Call(AppExpr, AtomExpr))
 
 Const : TRUE (BoolV(true))
 	| FALSE (BoolV(false))
