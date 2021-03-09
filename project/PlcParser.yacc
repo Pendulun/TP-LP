@@ -17,9 +17,10 @@
 		| VAR | FUN | REC
 		| FN | REQARROW | END | DRARROW 
 		| EOF
+		| PIPE | UNDER
 		| NAME of string | CINT of int
 
-%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of plcVal | Comps of expr | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType 
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
 
 %right SEMIC DARROW 
 %nonassoc IF
@@ -41,7 +42,7 @@
 
 %%
 
-(*%prec*)
+(*%prec*)	
 (*fun_app*)
 
 Prog : Expr (Expr)
@@ -88,8 +89,8 @@ AppExpr : AtomExpr AtomExpr ()
 Const : TRUE (BoolV(true))
 	| FALSE (BoolV(false))
 	| CINT (IntV(CINT))
-	| LPAREN RPAREN ()
-	| LPAREN Type LBRACKET RBRACKET RPAREN ()
+	| NILV ()
+	| LPAREN Type LBRACKET RBRACKET RPAREN (ESeq(Type))
 
 Comps : Expr COMMA Expr ()
 	| Expr COMMA Comps ()
@@ -109,14 +110,14 @@ Params : TypedVar (TypedVar)
 TypedVar : Type NAME ()
 	
 Type : AtomType (AtomType)
-	| LPAREN Types RPAREN ()
-	| LBRACKET Type RBRACKET ()
-	| Type DRARROW Type ()
+	| LPAREN Types RPAREN (ListT(Types))
+	| LBRACKET Type RBRACKET (SeqT(Type))
+	| Type DRARROW Type (FunT(Type1,Type2))
 
-AtomType : NILT ()
-	| BOOLT ()
-	| INTT ()
-	| LPAREN Type RPAREN ()
+AtomType : NILT (ListT([]))
+	| BOOLT (BoolT)
+	| INTT (IntT)
+	| LPAREN Type RPAREN (Type)
 
-Types : Type COMMA Type ()
-	| Type COMMA Types ()
+Types : Type COMMA Type (ListT(Type1::Type2::[]))
+	| Type COMMA Types (ListT(Type::Types))
