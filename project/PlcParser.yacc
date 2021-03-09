@@ -45,11 +45,12 @@
 (*fun_app*)
 
 Prog : Expr (Expr)
-	| Decl SEMIC Prog ()
+	| Decl (Decl)
 
-Decl : VAR NAME EQ Expr ()
-	| FUN NAME Args EQ Expr () (*Let ("f", Anon (IntT, "x", Var "x"), Call ("f", ConI 1))*)
-	| FUN REC NAME Args COLON Type EQ Expr ()
+Decl : VAR NAME EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
+		(*Let ("f", Anon (IntT, "x", Var "x"), Call ("f", ConI 1))*)
+	| FUN NAME Args EQ Expr SEMIC Prog (Let(NAME, makeAnon(Args, Expr), Prog)) 
+	| FUN REC NAME Args COLON Type EQ Expr SEMIC Prog (makeFun(NAME, Args, Type, Expr, Prog))
 
 Expr : AtomExpr (AtomExpr)
 	| AppExpr (AppExpr)
