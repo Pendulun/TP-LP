@@ -11,11 +11,11 @@
 		| MINUS | PLUS | MULTI | DIV
 		| EQ | NOTEQ | LESS | LESSEQ
 		| AND | IF | THEN | ELSE
-		| NIL | BOOL | INT
+		| NILV | NILT | BOOLT | INTT
 		| TRUE | FALSE
 		| HD | TL | ISE | MATCH | WITH | PRINT
 		| VAR | FUN | REC
-		| FN | LEQARROW | REQARROW | END | DARROW 
+		| FN | LEQARROW | REQARROW | END | DRARROW 
 		| EOF
 		| NAME of string | CINT of int
 
@@ -111,11 +111,11 @@ TypedVar : Type NAME ()
 Type : AtomType (AtomType)
 	| LPAREN Types RPAREN ()
 	| LBRACKET Type RBRACKET ()
-	| Type DARROW Type ()
+	| Type DRARROW Type ()
 
-AtomType : NIL ()
-	| BOOL ()
-	| INT ()
+AtomType : NILT ()
+	| BOOLT ()
+	| INTT ()
 	| LPAREN Type RPAREN ()
 
 Types : Type COMMA Type ()
