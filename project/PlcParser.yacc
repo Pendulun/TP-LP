@@ -4,6 +4,7 @@
 
 %pos int
 
+(*TUPLA*)
 %term SEMIC | COLON | DCOLON | COMMA | EXMARK
 		| LPAREN | RPAREN | LBRACE | RBRACE
 		| LBRACKET | RBRACKET
@@ -18,7 +19,6 @@
 		| EOF
 		| NAME of string | CINT of int
 
- (*ORDEM DE PRECEDENCIA!!!*)
 %nonterm Prog | Decl | Expr | AtomExpr | AppExpr | Const | Comps | MatchExpr | CondExpr | Args | Params | TypedVar | Type | AtomType | Types
 
 %right SEMIC DARROW 
@@ -40,6 +40,9 @@
 %start Prog
 
 %%
+
+(*%prec*)
+(*fun_app*)
 
 Prog : Expr (Expr)
 	| Decl SEMIC Prog ()
