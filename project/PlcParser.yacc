@@ -76,18 +76,18 @@ Expr : AtomExpr (AtomExpr)
 	| Expr LBRACKET CINT RBRACKET (Item(CINT, Expr))
 
 AtomExpr : Const (Const)
-	| NAME ()
-	| LBRACE Prog RBRACE
-	| LPAREN Expr RPAREN
-	| LPAREN Comps RPAREN
-	| FN Args REQARROW Expr END
+	| NAME (???)
+	| LBRACE Prog RBRACE (???)
+	| LPAREN Expr RPAREN ()
+	| LPAREN Comps RPAREN ()
+	| FN Args REQARROW Expr END (???)
 
 AppExpr : AtomExpr AtomExpr ()
 	| AppExpr AtomExpr ()
 
-Const : TRUE ()
-	| FALSE ()
-	| CINT ()
+Const : TRUE (BoolV(true))
+	| FALSE (BoolV(false))
+	| CINT (IntV(CINT))
 	| LPAREN RPAREN ()
 	| LPAREN Type LBRACKET RBRACKET RPAREN ()
 
