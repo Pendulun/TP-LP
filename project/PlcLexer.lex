@@ -36,6 +36,7 @@ fun keyword (s,lpos,rpos) =
 	| "rec" => (REC(lpos,rpos))
 	| "fn" => (FN(lpos,rpos))
 	| "end" => (END(lpos,rpos))
+	| "_" => (UNDER(lpos,rpos))
 	| _ => (NAME(s,lpos,rpos))
 
 (* A function to print a message error on the screen. *)
@@ -97,13 +98,10 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
 <INITIAL>"&&" => (AND(yypos, yypos));
 
-<INITIAL>"()" => (NILV(yypos, yypos));
-
 <INITIAL>"=>" => (REQARROW(yypos, yypos));
 <INITIAL>"->" => (DRARROW(yypos, yypos));
 
 <INITIAL>"|" => (PIPE(yypos,yypos));
-<INITIAL>"_" => (UNDER(yypos,yypos));
 
 <INITIAL>"(*" => (YYBEGIN COMMENT;lex());
 <COMMENT>"*)" => (YYBEGIN INITIAL; lex());

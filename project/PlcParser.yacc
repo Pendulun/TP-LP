@@ -11,7 +11,7 @@
 		| MINUS | PLUS | MULTI | DIV
 		| EQ | NOTEQ | LESS | LESSEQ
 		| AND | IF | THEN | ELSE
-		| NILV | NILT | BOOLT | INTT
+		| NILT | BOOLT | INTT
 		| TRUE | FALSE
 		| HD | TL | ISE | MATCH | WITH | PRINT
 		| VAR | FUN | REC
@@ -89,7 +89,7 @@ AppExpr : AtomExpr AtomExpr (Call(AtomExpr1, AtomExpr2))
 Const : TRUE (ConB(true))
 	| FALSE (ConB(false))
 	| CINT (ConI(CINT))
-	| NILV (List([]))
+	| LPAREN RPAREN (List([]))
 	| LPAREN Type LBRACKET RBRACKET RPAREN (ESeq(Type))
 
 Comps : Expr COMMA Expr (Expr1::Expr2::[])
