@@ -59,6 +59,7 @@ fun init() = ()
 %%
 
 %header (functor PlcLexerFun(structure Tokens: PlcParser_TOKENS));
+%s COMMENT;
 
 alpha=[A-Za-z];
 digit=[0-9];
@@ -68,38 +69,42 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 %%
 
 \n => (lineNumber := !lineNumber + 1; lex());
-{whitespace}+ => (lex());
-{digit}+ => (CINT(strToInt(yytext), yypos, yypos)); 
-{identifier} => (keyword(yytext, yypos, yypos));
+<INITIAL>{whitespace}+ => (lex());
+<INITIAL>{digit}+ => (CINT(strToInt(yytext), yypos, yypos)); 
+<INITIAL>{identifier} => (keyword(yytext, yypos, yypos));
 
-";" => (SEMIC(yypos, yypos));
-":" => (COLON(yypos, yypos));
-"::" => (DCOLON(yypos, yypos));
-"," => (COMMA(yypos, yypos));
-"!" => (EXMARK(yypos, yypos));
+<INITIAL>";" => (SEMIC(yypos, yypos));
+<INITIAL>":" => (COLON(yypos, yypos));
+<INITIAL>"::" => (DCOLON(yypos, yypos));
+<INITIAL>"," => (COMMA(yypos, yypos));
+<INITIAL>"!" => (EXMARK(yypos, yypos));
 
-"(" => (LPAREN(yypos, yypos));
-")" => (RPAREN(yypos, yypos));
-"{" => (LBRACE(yypos, yypos)); 
-"}" => (RBRACE(yypos, yypos)); 
-"[" => (LBRACKET(yypos, yypos)); 
-"]" => (RBRACKET(yypos, yypos)); 
-"-" => (MINUS(yypos, yypos)); 
-"+" => (PLUS(yypos, yypos)); 
-"*" => (MULTI(yypos, yypos)); 
-"/" => (DIV(yypos, yypos)); 
+<INITIAL>"(" => (LPAREN(yypos, yypos));
+<INITIAL>")" => (RPAREN(yypos, yypos));
+<INITIAL>"{" => (LBRACE(yypos, yypos)); 
+<INITIAL>"}" => (RBRACE(yypos, yypos)); 
+<INITIAL>"[" => (LBRACKET(yypos, yypos)); 
+<INITIAL>"]" => (RBRACKET(yypos, yypos)); 
+<INITIAL>"-" => (MINUS(yypos, yypos)); 
+<INITIAL>"+" => (PLUS(yypos, yypos)); 
+<INITIAL>"*" => (MULTI(yypos, yypos)); 
+<INITIAL>"/" => (DIV(yypos, yypos)); 
 
-"=" => (EQ(yypos, yypos)); 
-"!=" => (NOTEQ(yypos, yypos)); 
-"<" => (LESS(yypos, yypos)); 
-"<=" => (LESSEQ(yypos, yypos)); 
+<INITIAL>"=" => (EQ(yypos, yypos)); 
+<INITIAL>"!=" => (NOTEQ(yypos, yypos)); 
+<INITIAL>"<" => (LESS(yypos, yypos)); 
+<INITIAL>"<=" => (LESSEQ(yypos, yypos)); 
 
-"&&" => (AND(yypos, yypos));
+<INITIAL>"&&" => (AND(yypos, yypos));
 
-"()" => (NILV(yypos, yypos));
+<INITIAL>"()" => (NILV(yypos, yypos));
 
-"=>" => (REQARROW(yypos, yypos));
-"->" => (DRARROW(yypos, yypos));
+<INITIAL>"=>" => (REQARROW(yypos, yypos));
+<INITIAL>"->" => (DRARROW(yypos, yypos));
 
-"|" => (PIPE(yypos,yypos));
-"_" => (UNDER(yypos,yypos));
+<INITIAL>"|" => (PIPE(yypos,yypos));
+<INITIAL>"_" => (UNDER(yypos,yypos));
+
+<INITIAL>"(*" => (YYBEGIN COMMENT;lex());
+<COMMENT>"*)" => (YYBEGIN INITIAL; lex());
+<COMMENT>. => (lex());
