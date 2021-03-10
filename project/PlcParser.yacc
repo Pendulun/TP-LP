@@ -20,7 +20,7 @@
 		| PIPE | UNDER
 		| NAME of string | CINT of int
 
-%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr option * expr | CondExpr of expr option | Args of (plcType * string) list | Params of plcType | TypedVar of (plcType * string) | Type of plcType | AtomType of plcType | Types of plcType
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr option * expr | CondExpr of expr option | Args of (plcType * string) list | Params of (plcType * string) list | TypedVar of (plcType * string) | Type of plcType | AtomType of plcType | Types of plcType list
 
 %right SEMIC DRARROW 
 %nonassoc IF
