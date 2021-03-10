@@ -20,7 +20,7 @@
 		| PIPE | UNDER
 		| NAME of string | CINT of int
 
-%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr * expr list | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
 
 %right SEMIC DARROW 
 %nonassoc IF
@@ -56,7 +56,7 @@ Decl : VAR NAME EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
 Expr : AtomExpr (AtomExpr)
 	| AppExpr (AppExpr)
 	| IF Expr THEN Expr ELSE Expr (If(Expr1, Expr2, Expr3))
-	| MATCH Expr WITH MatchExpr (Match(Expr, MatchExpr))
+	| MATCH Expr WITH MatchExpr END (Match(Expr, MatchExpr))
 	| EXMARK Expr (Prim1("!", Expr))
 	| MINUS Expr (Prim1("-", Expr))
 	| HD Expr (Prim1("hd", Expr))
@@ -95,11 +95,11 @@ Const : TRUE (ConB(true))
 Comps : Expr COMMA Expr (Expr1::Expr2)
 	| Expr COMMA Comps (Expr::Comps)
 
-MatchExpr : END ()
-	| (*???*)
+MatchExpr : (* END () *)
+	| PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
 
-CondExpr : Expr (Expr)
-	| (*???*)
+CondExpr : Expr (SOME (Expr))
+	| UNDER (NONE)
 
 Args : LPAREN RPAREN ()
 	| LPAREN Params RPAREN ()
