@@ -69,12 +69,12 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
 \n => (lineNumber := !lineNumber + 1; lex());
 {whitespace}+ => (lex());
-{digit}+ => (CINT(strToInt(yytext), yypos, yypos)); (*CINT*)
-{identifier} => (keyword(yytext, yypos, yypos)); (*NAME??*) (*IMPLEMENTAR KEYWORD!*)
+{digit}+ => (CINT(strToInt(yytext), yypos, yypos)); 
+{identifier} => (keyword(yytext, yypos, yypos));
 
 ";" => (SEMIC(yypos, yypos));
 ":" => (COLON(yypos, yypos));
-"::" => (DCOLON(yypos, yypos));	(*CASARÁ A MAIOR REGRA*)
+"::" => (DCOLON(yypos, yypos));
 "," => (COMMA(yypos, yypos));
 "!" => (EXMARK(yypos, yypos));
 
@@ -94,14 +94,12 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 "<" => (LESS(yypos, yypos)); 
 "<=" => (LESSEQ(yypos, yypos)); 
 
-"&&" => (AND(yypos, yypos)); (*CONJUNÇÃO BOOLEANA*) 
+"&&" => (AND(yypos, yypos));
 
 "()" => (NILV(yypos, yypos));
 
 "=>" => (REQARROW(yypos, yypos));
 "->" => (DRARROW(yypos, yypos));
 
-"|" => (PIPE(yypos,yypos))
-"_" => (UNDER(yypos,yypos))
-
-(*NÃO SEI SE ALGUMA REGRA É ESCRITA PARA O EOF*)
+"|" => (PIPE(yypos,yypos));
+"_" => (UNDER(yypos,yypos));
