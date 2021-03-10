@@ -95,7 +95,9 @@ Const : TRUE (ConB(true))
 Comps : Expr COMMA Expr (Expr1::Expr2::[])
 	| Expr COMMA Comps (Expr::Comps)
 
-MatchExpr : PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
+MatchExpr : 
+ PIPE CondExpr DRARROW Expr ((CondExpr, Expr)::[])
+| PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
 
 CondExpr : Expr (SOME (Expr))
 	| UNDER (NONE)
