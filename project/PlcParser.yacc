@@ -4,7 +4,6 @@
 
 %pos int
 
-(*TUPLA*)
 %term SEMIC | COLON | DCOLON | COMMA | EXMARK
 		| LPAREN | RPAREN | LBRACE | RBRACE
 		| LBRACKET | RBRACKET
@@ -42,8 +41,7 @@
 
 %%
 
-(*%prec*)	
-(*fun_app*)
+(*%prec*)
 
 Prog : Expr (Expr)
 	| Decl (Decl)
@@ -113,7 +111,7 @@ TypedVar : Type NAME ((Type, NAME))
 Type : AtomType (AtomType)
 	| LPAREN Types RPAREN (ListT(Types))
 	| LBRACKET Type RBRACKET (SeqT(Type))
-	| Type DRARROW Type (FunT(Type1,Type2))
+	| Type DRARROW Type (FunT(Type1, Type2))
 
 AtomType : NILT (ListT([]))
 	| BOOLT (BoolT)
