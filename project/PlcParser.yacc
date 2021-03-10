@@ -20,18 +20,18 @@
 		| PIPE | UNDER
 		| NAME of string | CINT of int
 
-%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr * expr list | CondExpr of expr | Args | Params of plcType | TypedVar | Type of plcType | AtomType of plcType | Types	of plcType
+%nonterm Prog of expr | Decl of expr | Expr of expr | AtomExpr of expr | AppExpr of expr | Const of expr | Comps of expr list | MatchExpr of expr * expr list | CondExpr of expr | Args of (plcType * string) list | Params of plcType | TypedVar of (plcType * string) | Type of plcType | AtomType of plcType | Types of plcType
 
-%right SEMIC DARROW 
+%right SEMIC DRARROW 
 %nonassoc IF
 %left ELSE
 %left AND
 %left EQ NOTEQ
-%left LESS LEQARROW
+%left LESS LESSEQ
 %right DCOLON
 %left PLUS MINUS
 %left MULTI DIV
-%nonassoc NOT HD TL ISE PRINT NAME
+%nonassoc EXMARK HD TL ISE PRINT NAME
 %left LBRACKET
 
 %eop EOF
@@ -95,19 +95,18 @@ Const : TRUE (ConB(true))
 Comps : Expr COMMA Expr (Expr1::Expr2)
 	| Expr COMMA Comps (Expr::Comps)
 
-MatchExpr : (* END () *)
-	| PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
+MatchExpr : (* END () *) PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
 
 CondExpr : Expr (SOME (Expr))
 	| UNDER (NONE)
 
-Args : LPAREN RPAREN ()
-	| LPAREN Params RPAREN ()
+Args : LPAREN RPAREN ([])
+	| LPAREN Params RPAREN (Params)
 
 Params : TypedVar (TypedVar)
-	| TypedVar COMMA Params ()
+	| TypedVar COMMA Params (TypedVar::Params)
 
-TypedVar : Type NAME ()
+TypedVar : Type NAME ((Type, NAME))
 	
 Type : AtomType (AtomType)
 	| LPAREN Types RPAREN (ListT(Types))
@@ -119,5 +118,5 @@ AtomType : NILT (ListT([]))
 	| INTT (IntT)
 	| LPAREN Type RPAREN (Type)
 
-Types : Type COMMA Type (ListT(Type1::Type2))
-	| Type COMMA Types (ListT(Type::Types))
+Types : Type COMMA Type (Type1::Type2::[])
+	| Type COMMA Types (Type::Types)
