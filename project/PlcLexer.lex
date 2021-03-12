@@ -63,7 +63,7 @@ fun init() = ()
 %s COMMENT;
 
 alpha=[A-Za-z];
-digit=[0-9];
+digit=[0-9]+;
 whitespace=[\ \t];
 identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
