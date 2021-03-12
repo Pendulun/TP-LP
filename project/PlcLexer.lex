@@ -104,5 +104,9 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 <INITIAL>"|" => (PIPE(yypos,yypos));
 
 <INITIAL>"(*" => (YYBEGIN COMMENT;lex());
+
+<INITIAL>. => (error("\n***Lexer error: bad character***\n"); raise Fail("Lexer error: bad character "^ yytext));
+
 <COMMENT>"*)" => (YYBEGIN INITIAL; lex());
 <COMMENT>. => (lex());
+
