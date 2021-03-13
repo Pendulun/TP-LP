@@ -33,16 +33,15 @@ fromString "match x with | 0 -> 1| _ -> -1 end";
 fromFile ("example.plc");
 
 
-use "testParserCases.sml"
-(*
+use "testParserCases.sml";
 
+(*Se for usar essa função de conferir, comentar o 'use "Absyn.sml";' 
+do arquivo testParserCases.sml*)
+(*	
 fun confere(lista) =
 	case lista of 
-		[] => print("Todos passaram \n")
-	| (s,e)::t => if fromString(s) = e then confere(t) else print("Deu ruim");
-
+		[] => print("Testes passaram com sucesso \n")
+	| (s,e)::t => if fromString(s) = e then confere(t) else print("ERRO!");
 
 confere(cases);
 *)
-(* Try to add a systematic way of using the test cases in
-   testParserCases to stress test your parser *)
