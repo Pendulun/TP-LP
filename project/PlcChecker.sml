@@ -93,10 +93,26 @@ fun teval (e:expr,env:((string * plcType) list)) =
 		)
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
 	| ConI(_) => IntT
-	| ConB(_) => BoolT;
+	| ConB(_) => BoolT
+	| Prim1(ope,expr) => 
+		(
+			if ope = "!" then
+				if (teval (expr,env)) = BoolT
+				then
+					BoolT
+				else
+					raise WrongRetType
+			else if ope = "-" then
+				if (teval (expr,env)) = IntT
+				then
+					IntT
+				else
+					raise WrongRetType
+			else raise NotFunc
+		)
 
 
-val progEst = Prim2("=", ConI 5, ConB true);
+val progEst = Prim1("-", ConB true);
 
 teval (progEst,[]);
 
