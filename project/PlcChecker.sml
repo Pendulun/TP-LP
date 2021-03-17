@@ -119,10 +119,18 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					|	SeqT(SeqT(a)) => SeqT(a)
 					| _ => raise UnknownType
 				end
+			else if ope = "tl" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					case texpr of 
+						SeqT(_) => texpr
+					| _ => raise UnknownType
+				end
 			else raise NotFunc
 
 
-val progEst = Prim1("hd", ESeq(SeqT(FunT(IntT,BoolT))));
+val progEst = Prim1("tl", ESeq(SeqT(FunT(IntT,BoolT))));
 
 teval (progEst,[]);
 
