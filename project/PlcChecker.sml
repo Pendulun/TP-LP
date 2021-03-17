@@ -28,6 +28,14 @@ fun checkIsSeqType (t:plcType):bool = case t
 	of SeqT(_) => true
 	| _ => false; 
 
+(*fun checkIsType(t:plcType):bool = 
+	case t of BoolT => true
+		| IntT => true
+		| ListT(_) => true
+		| SeqT (_) => true
+		| FunT(_) => true
+		| _ => false;
+*)
 
 fun teval (e:expr,env:((string * plcType) list)) = 
 	case e of 
@@ -134,6 +142,12 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					case texpr of 
 						SeqT(_) => BoolT
 					| _ => raise UnknownType
+				end
+			else if ope = "print" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					ListT([])
 				end
 			else raise NotFunc
 
