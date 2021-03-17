@@ -95,7 +95,6 @@ fun teval (e:expr,env:((string * plcType) list)) =
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
 	| Prim1(ope,expr) => 
-		(
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT
 				then
@@ -108,11 +107,22 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					IntT
 				else
 					raise WrongRetType
+			else if ope = "hd" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					case texpr of 
+						SeqT(IntT) => IntT
+					|	SeqT(BoolT) => BoolT
+					|	SeqT(FunT(a,b)) => FunT(a,b)
+					|	SeqT(ListT(l)) => ListT(l)
+					|	SeqT(SeqT(a)) => SeqT(a)
+					| _ => raise UnknownType
+				end
 			else raise NotFunc
-		)
 
 
-val progEst = Prim1("-", ConB true);
+val progEst = Prim1("hd", ESeq(SeqT(FunT(IntT,BoolT))));
 
 teval (progEst,[]);
 
