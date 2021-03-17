@@ -18,5 +18,5 @@ open PlcFrontEnd;
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = fromString "([Bool] [])::([[Bool]] [])";
+val expr = fromString "()";
 run (expr, []);

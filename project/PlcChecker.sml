@@ -118,6 +118,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
+	| List([]) => ListT([])
 	| Prim1(ope,expr) => 
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT
