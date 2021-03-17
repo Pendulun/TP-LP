@@ -15,14 +15,6 @@ exception CallTypeMisM
 exception NotFunc
 exception ListOutOfRange
 exception OpNonList
-
-(*
-fun checkListTypeEqType (h::[]):(plcType list) = 
-	(checkEqType h)
-	| checkListTypeEqType(h::t):(plcType list) =
-	if (checkEqType h) then (checkListTypeEqType t) else false;
-
-*)
 	 
 fun checkEqType (t:plcType):bool = 
 	case t of BoolT => true
@@ -35,13 +27,6 @@ fun checkEqType (t:plcType):bool =
 fun checkIsSeqType (t:plcType):bool = case t 
 	of SeqT(_) => true
 	| _ => false; 
-
-
-(*fun checkBasicEqType (t:plcType = 
-	case t of BoolT => true
-		| IntT => true
-		| ListT([]) => true
-		| _ => false;*)
 
 
 fun teval (e:expr,env:((string * plcType) list)) = 
@@ -62,25 +47,56 @@ fun teval (e:expr,env:((string * plcType) list)) =
 			else
 				raise IfCondNotBool
 	| Prim2(ope,expr1,expr2) =>
-		(case ope of "=" => (let
-			val tv1 = (teval (expr1,env))
-			val tv2 = (teval (expr2,env))
-		in
-			if tv1 = tv2
-			then 
-				if checkEqType tv1
-				then BoolT
-				else
-					raise UnknownType (*TROCAR DEPOIS*)
-			else
-				raise NotEqTypes
-		end))
+		(
+			if ope = "=" orelse ope = "!=" then 
+				(let
+					val tv1 = (teval (expr1,env))
+					val tv2 = (teval (expr2,env))
+				in
+					if tv1 = tv2
+					then 
+						if checkEqType tv1
+						then BoolT
+						else
+							raise UnknownType (*TROCAR DEPOIS*)
+					else
+						raise NotEqTypes
+			end) 
+			else if ope = "<" orelse ope = "<=" then
+				(let
+					val tv1 = (teval (expr1,env))
+					val tv2 = (teval (expr2,env))
+				in
+					if tv1 = tv2 
+					then 
+						if tv1 = IntT
+							then BoolT
+						else
+							raise UnknownType 
+					else
+						raise NotEqTypes
+				end) 
+			else if ope = "+" orelse ope = "-" orelse ope = "*" orelse ope = "/" then
+				(let
+					val tv1 = (teval (expr1,env))
+					val tv2 = (teval (expr2,env))
+				in
+					if tv1 = tv2 
+					then 
+						if tv1 = IntT
+							then IntT
+						else
+							raise UnknownType 
+					else
+						raise NotEqTypes
+				end) else raise NotFunc
+		)
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
 	| ConI(_) => IntT
 	| ConB(_) => BoolT;
 
 
-val progEst = If(Prim2("=", ESeq(SeqT(BoolT)), ESeq(SeqT(BoolT))), ConB true, ConB false);
+val progEst = Prim2("=", ConI 5, ConB true);
 
 teval (progEst,[]);
 
