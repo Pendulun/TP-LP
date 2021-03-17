@@ -4,6 +4,6 @@ use "PlcChecker.sml";
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = Prim1("print", ConI 5);
+val expr = Prim2("&&", ConB true, ConB false);
 
 run (expr, []);

@@ -97,7 +97,21 @@ fun teval (e:expr,env:((string * plcType) list)) =
 							raise UnknownType 
 					else
 						raise NotEqTypes
-				end) else raise NotFunc
+				end) else if ope = "&&" then
+					(let
+							val tv1 = (teval (expr1,env))
+							val tv2 = (teval (expr2,env))
+						in
+							if tv1 = tv2
+							then 
+								if tv1 = BoolT
+								then BoolT
+								else
+									raise UnknownType 
+							else
+								raise NotEqTypes
+					end)
+				else raise NotFunc
 		)
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
 	| ConI(_) => IntT
