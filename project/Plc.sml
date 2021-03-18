@@ -16,7 +16,13 @@ Control.Print.stringDepth := 1000;
 open PlcFrontEnd;
 
 fun run (e:expr, env:((string * plcType) list))=
-	teval(e,env);
+	let
+		val eTypeChecking = teval(e,env);
+		val eInterpreting = eval(e,env);
+	in
+		(val2string eInterpreting) ^ " : " ^ (type2string eTypeChecking) 
+	end
+	
 
 val expr = fromString "match n with end";
 run (expr, []);
