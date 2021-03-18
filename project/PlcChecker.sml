@@ -123,6 +123,12 @@ fun teval (e:expr,env:((string * plcType) list)) =
 				else raise NotFunc
 		)
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
+	| Anon(tipos, lista, expr) => 
+	let
+		val texpr = teval(expr, (lista,tipos)::env)
+	in
+		FunT(tipos, texpr)
+	end
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
 	| Let(variavel, value, prog) => 

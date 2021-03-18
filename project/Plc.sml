@@ -18,5 +18,5 @@ open PlcFrontEnd;
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = fromString "5 ; true; 6";
+val expr = fromString "var f = fn (Int x) => x end; f(10)";
 run (expr, []);
