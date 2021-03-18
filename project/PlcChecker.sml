@@ -174,6 +174,17 @@ fun teval (e:expr,env:((string * plcType) list)) =
 			in
 				teval(prog,(variavel,tvar)::env)
 			end
+	| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
+		let
+			val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
+			val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)
+		in
+			if tcorpo = tRetorno 
+			then
+				tprog
+			else
+				raise WrongRetType
+		end
 	| Var(x) => lookup env x
 	| Item(n,expr) =>
 	let
