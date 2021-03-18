@@ -118,6 +118,13 @@ fun teval (e:expr,env:((string * plcType) list)) =
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
+	| Let(variavel, value, prog) => 
+			let
+				val tvar = teval(value,env)
+			in
+				teval(prog,(variavel,tvar)::env)
+			end
+	| Var(x) => lookup env x
 	| List([]) => ListT([])
 	| List(lista) => if (List.length lista) > 1 then
 		 ListT((List.map (fn (x) => teval (x,env)) lista))
