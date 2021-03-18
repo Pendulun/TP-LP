@@ -113,6 +113,13 @@ fun teval (e:expr,env:((string * plcType) list)) =
 							else
 								raise UnknownType
 					end)
+				else if ope = ";" then
+					(let
+							val tv1 = (teval (expr1,env))
+							val tv2 = (teval (expr2,env))
+						in
+							tv2
+					end)
 				else raise NotFunc
 		)
 	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
