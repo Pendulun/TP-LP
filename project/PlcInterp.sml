@@ -27,7 +27,13 @@ fun eval (e:expr,env:((string * plcType) list)) =
 			if(eval(exp1,env))
 			then eval(v1,env)
 			else eval(v2,env)
-	| Prim2(ope,expr1,expr2) =>
+		| Let(variavel, value, prog) => 
+			let
+				val evar = eval(value,env)
+			in
+				eval(prog,(variavel,evar)::env)
+			end
+	(*| Prim2(ope,expr1,expr2) =>
 		(
 			if ope = "=" orelse ope = "!=" then 
 				(let
@@ -39,7 +45,7 @@ fun eval (e:expr,env:((string * plcType) list)) =
 						if checkEqType tv1
 						then BoolT
 						else
-							raise UnknownType (*TROCAR DEPOIS*)
+							raise UnknownType
 					else
 						raise NotEqTypes
 			end) 
@@ -104,7 +110,7 @@ fun eval (e:expr,env:((string * plcType) list)) =
 					end)
 				else raise NotFunc
 		)
-	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType (*TROCAR DEPOIS*)
+	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType
 	| Anon(tipos, lista, expr) => 
 	let
 		val texpr = teval(expr, (lista,tipos)::env)
@@ -152,12 +158,7 @@ fun eval (e:expr,env:((string * plcType) list)) =
 				else
 					raise MatchCondTypesDiff
 		end
-	| Let(variavel, value, prog) => 
-			let
-				val tvar = teval(value,env)
-			in
-				teval(prog,(variavel,tvar)::env)
-			end
+	
 	| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
 		let
 			val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
@@ -232,4 +233,4 @@ fun eval (e:expr,env:((string * plcType) list)) =
 				in
 					ListT([])
 				end
-			else raise NotFunc
+			else raise NotFunc*)
