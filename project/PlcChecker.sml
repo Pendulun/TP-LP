@@ -129,6 +129,20 @@ fun teval (e:expr,env:((string * plcType) list)) =
 	in
 		FunT(tipos, texpr)
 	end
+	| Call(f,params) => 
+	let
+		val fType = teval(f,env)
+		val tparams = teval(params, env)
+	in
+		case fType of 
+		FunT(tipos,texpr) => 
+			if tparams = tipos
+			then
+				texpr
+			else 
+				raise CallTypeMisM
+		| _ =>	raise NotFunc
+	end
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
 	| Let(variavel, value, prog) => 
