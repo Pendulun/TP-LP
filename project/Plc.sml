@@ -18,5 +18,5 @@ open PlcFrontEnd;
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = fromString "var f = fn (Bool x) => if x then 11 else 22 end; f(0)";
+val expr = fromString " match 1 with | true -> true | true -> true | _ -> false end";
 run (expr, []);

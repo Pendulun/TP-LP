@@ -143,6 +143,29 @@ fun teval (e:expr,env:((string * plcType) list)) =
 				raise CallTypeMisM
 		| _ =>	raise NotFunc
 	end
+	| Match(expComp, listaOp) => 
+		let
+			val texprComp = teval(expComp,env)
+		in
+			if List.all (fn((opcao,retorno)) => 
+				case opcao of 
+					SOME(tipo) => (teval (tipo,env)) = texprComp
+					| NONE => true
+				)  listaOp
+			then
+				(let
+					val tPrimRetorno = teval((#2 (hd(listaOp))),env)
+				in
+					if List.all (fn((opcao,retorno)) => (teval(retorno,env)) = tPrimRetorno) listaOp
+					then 
+						tPrimRetorno
+					else
+						raise MatchResTypeDiff
+				end)
+				
+			else
+				raise MatchCondTypesDiff
+		end
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
 	| Let(variavel, value, prog) => 
