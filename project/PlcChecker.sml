@@ -125,6 +125,16 @@ fun teval (e:expr,env:((string * plcType) list)) =
 				teval(prog,(variavel,tvar)::env)
 			end
 	| Var(x) => lookup env x
+	| Item(n,expr) =>
+	let
+		val texpr = teval (expr,env)
+	in
+		case texpr of ListT([]) => raise ListOutOfRange 
+			| ListT(h::t) => if n > ((List.length (h::t))) orelse n < 1
+				then raise ListOutOfRange
+				else List.nth ((h::t),n-1)
+			| _ => raise OpNonList
+	end
 	| List([]) => ListT([])
 	| List(lista) => if (List.length lista) > 1 then
 		 ListT((List.map (fn (x) => teval (x,env)) lista))

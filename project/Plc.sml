@@ -18,5 +18,5 @@ open PlcFrontEnd;
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = fromString "var y = 1; (y,1)";
-run (expr, [("y",IntT)]);
+val expr = fromString "(true,2)[3]";
+run (expr, []);
