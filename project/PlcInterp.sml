@@ -20,23 +20,13 @@ fun checkIsSeqType (t:plcType):bool = case t
 
 fun eval (e:expr,env:((string * plcType) list)) = 
 	case e of 
-		ConI(n) => n
-		|ConB(b) => b
-	|If(exp1,v1,v2) => 
-			if (teval (exp1,env)) = BoolT 
-			then 
-				(let
-					val tv1 = (teval (v1,env))
-					val tv2 = (teval (v2,env))
-				in
-					if  tv1 = tv2
-					then 
-						tv1
-					else
-						raise NotEqTypes
-				end)
-			else
-				raise IfCondNotBool
+		ConI(n) => IntV(n)
+		| ConB(b) => BoolV(b)
+		| Var(x) => lookup env x
+		| If(exp1,v1,v2) => 
+			if(eval(exp1,env))
+			then eval(v1,env)
+			else eval(v2,env)
 	| Prim2(ope,expr1,expr2) =>
 		(
 			if ope = "=" orelse ope = "!=" then 
@@ -179,7 +169,7 @@ fun eval (e:expr,env:((string * plcType) list)) =
 			else
 				raise WrongRetType
 		end
-	| Var(x) => lookup env x
+	
 	| Item(n,expr) =>
 	let
 		val texpr = teval (expr,env)
