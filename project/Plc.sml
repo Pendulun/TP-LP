@@ -18,5 +18,5 @@ open PlcFrontEnd;
 fun run (e:expr, env:((string * plcType) list))=
 	teval(e,env);
 
-val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 0 else 1; f(5)";
+val expr = fromString "match n with end";
 run (expr, []);
