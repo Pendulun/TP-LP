@@ -119,6 +119,10 @@ fun teval (e:expr,env:((string * plcType) list)) =
 	| ConI(_) => IntT
 	| ConB(_) => BoolT
 	| List([]) => ListT([])
+	| List(lista) => if (List.length lista) > 1 then
+		 ListT((List.map (fn (x) => teval (x,env)) lista))
+		else
+			raise UnknownType
 	| Prim1(ope,expr) => 
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT
@@ -167,7 +171,3 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					ListT([])
 				end
 			else raise NotFunc
-
-
-
-
