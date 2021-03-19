@@ -41,7 +41,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					then 
 						tv1
 					else
-						raise NotEqTypes
+						raise DiffBrTypes
 				end)
 			else
 				raise IfCondNotBool
