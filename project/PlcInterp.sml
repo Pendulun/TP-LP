@@ -15,11 +15,7 @@ exception NotAFunc
 		| ListT([]) => true
 		| SeqT (t2) => (checkEqType (t2))
 		| ListT(l) => (List.all (checkEqType) l)
-		| FunT(_) => false;
-
-fun checkIsSeqType (t:plcType):bool = case t 
-	of SeqT(_) => true
-	| _ => false; *)
+		| FunT(_) => false;*)
 
 fun eval (e:expr,env:((string * plcVal) list)) = 
 	case e of 
@@ -49,6 +45,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		 ListV((List.map (fn (x) => eval (x,env)) lista))
 		else
 			raise Impossible
+		| ESeq(t) => SeqV([])
 	(*| Prim2(ope,expr1,expr2) =>
 		(
 			if ope = "=" orelse ope = "!=" then 
@@ -126,7 +123,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					end)
 				else raise NotFunc
 		)
-	| ESeq(t) => if (checkIsSeqType (t)) then t else raise WrongRetType
+	
 	| Anon(tipos, lista, expr) => 
 	let
 		val texpr = teval(expr, (lista,tipos)::env)
