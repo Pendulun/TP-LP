@@ -1,12 +1,15 @@
 (* PlcInterp *)
 
+(*use "Environ.sml";
+use "Absyn.sml";*) 
+
 exception Impossible
 exception HDEmptySeq
 exception TLEmptySeq
 exception ValueNotFoundInMatch
 exception NotAFunc
 
-fun checkEqType (t:plcType):bool = 
+(*fun checkEqType (t:plcType):bool = 
 	case t of BoolT => true
 		| IntT => true
 		| ListT([]) => true
@@ -16,23 +19,36 @@ fun checkEqType (t:plcType):bool =
 
 fun checkIsSeqType (t:plcType):bool = case t 
 	of SeqT(_) => true
-	| _ => false; 
+	| _ => false; *)
 
-fun eval (e:expr,env:((string * plcType) list)) = 
+fun eval (e:expr,env:((string * plcVal) list)) = 
 	case e of 
 		ConI(n) => IntV(n)
 		| ConB(b) => BoolV(b)
 		| Var(x) => lookup env x
 		| If(exp1,v1,v2) => 
-			if(eval(exp1,env))
-			then eval(v1,env)
-			else eval(v2,env)
+			let
+				val eExp1 = eval(exp1,env)
+			in
+				case eExp1 of 
+					BoolV(b) => 
+						if (b) 
+						then eval(v1,env)
+						else eval(v2,env)
+					| _ => raise Impossible
+			end
+			
 		| Let(variavel, value, prog) => 
 			let
 				val evar = eval(value,env)
 			in
 				eval(prog,(variavel,evar)::env)
 			end
+		| List([]) => ListV([])
+		| List(lista) => if (List.length lista) > 1 then
+		 ListV((List.map (fn (x) => eval (x,env)) lista))
+		else
+			raise Impossible
 	(*| Prim2(ope,expr1,expr2) =>
 		(
 			if ope = "=" orelse ope = "!=" then 
@@ -181,11 +197,8 @@ fun eval (e:expr,env:((string * plcType) list)) =
 				else List.nth ((h::t),n-1)
 			| _ => raise OpNonList
 	end
-	| List([]) => ListT([])
-	| List(lista) => if (List.length lista) > 1 then
-		 ListT((List.map (fn (x) => teval (x,env)) lista))
-		else
-			raise UnknownType
+	
+	
 	| Prim1(ope,expr) => 
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT

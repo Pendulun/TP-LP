@@ -2,7 +2,9 @@
 CM.make("$/basis.cm");
 CM.make("$/ml-yacc-lib.cm");
 use "Environ.sml";
+use "Absyn.sml";
 use "PlcChecker.sml";
+use "PlcInterp.sml";
 use "PlcParserAux.sml";
 use "PlcParser.yacc.sig";
 use "PlcParser.yacc.sml";
@@ -15,14 +17,17 @@ Control.Print.stringDepth := 1000;
 
 open PlcFrontEnd;
 
-fun run (e:expr, env:((string * plcType) list))=
+fun run (e:expr)= (*SEM ENV MESMO?*)
 	let
-		val eTypeChecking = teval(e,env);
-		val eInterpreting = eval(e,env);
+		val typeEnv = [];
+		val valueEnv = [];
+
+		val eTypeChecking = teval(e,typeEnv);
+		val eInterpreting = eval(e,valueEnv);
 	in
 		(val2string eInterpreting) ^ " : " ^ (type2string eTypeChecking) 
 	end
 	
 
-val expr = fromString "match n with end";
-run (expr, []);
+val expr = fromString "(3, true, 5, false)";
+run (expr);
