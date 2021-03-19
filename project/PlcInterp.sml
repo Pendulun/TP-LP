@@ -90,13 +90,13 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 						SeqV(lista) => BoolV(List.null lista)
 					| _ => raise Impossible
 				end
-			(*else if ope = "print" then
+			else if ope = "print" then
 				let
-					val texpr = (teval (expr,env))
+					val eExpr = (eval (expr,env))
 				in
-					ListT([])
+					print(val2string(eExpr)^"\n");
+					ListV([])
 				end
-			else raise NotFunc *)
 			else raise Impossible
 	| Prim2(ope,expr1,expr2) =>
 		(
