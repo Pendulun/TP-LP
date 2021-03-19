@@ -64,7 +64,6 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 						IntV(n) => IntV(~n)
 						| _ => raise Impossible
 				end
-			else raise Impossible
 			(*else if ope = "hd" then
 				let
 					val texpr = (teval (expr,env))
@@ -76,8 +75,9 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					|	SeqT(ListT(l)) => ListT(l)
 					|	SeqT(SeqT(a)) => SeqT(a)
 					| _ => raise UnknownType
-				end
-			else if ope = "tl" then
+				end*)
+			else raise Impossible
+			(*else if ope = "tl" then
 				let
 					val texpr = (teval (expr,env))
 				in
@@ -100,9 +100,9 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					ListT([])
 				end
 			else raise NotFunc *)
-	(*| Prim2(ope,expr1,expr2) =>
+	| Prim2(ope,expr1,expr2) =>
 		(
-			if ope = "=" orelse ope = "!=" then 
+			(*if ope = "=" orelse ope = "!=" then 
 				(let
 					val tv1 = (teval (expr1,env))
 					val tv2 = (teval (expr2,env))
@@ -157,28 +157,30 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 							else
 								raise NotEqTypes
 					end)
-				else if ope = "::" then
+				else*) if ope = "::" then
 					(let
-							val tv1 = (teval (expr1,env))
-							val tv2 = (teval (expr2,env))
+							val eExp1 = (eval (expr1,env))
+							val eExp2 = (eval (expr2,env))
 						in
-							if tv2 =  SeqT(tv1)
-							then 
-								SeqT(tv1)
-							else
-								raise UnknownType
+							case eExp1 of SeqV(a) => (
+									case eExp2 of SeqV(b) => SeqV(a@b)
+									| _ => SeqV(eExp2::a)
+									)
+							| _ => (
+									case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
+									| SeqV(b) => SeqV(eExp1::b))
 					end)
-				else if ope = ";" then
+				(*else if ope = ";" then
 					(let
 							val tv1 = (teval (expr1,env))
 							val tv2 = (teval (expr2,env))
 						in
 							tv2
-					end)
+					end)*)
 				else raise NotFunc
 		)
 	
-	| Anon(tipos, lista, expr) => 
+	(*| Anon(tipos, lista, expr) => 
 	let
 		val texpr = teval(expr, (lista,tipos)::env)
 	in
