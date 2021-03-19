@@ -100,21 +100,14 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			else raise Impossible
 	| Prim2(ope,expr1,expr2) =>
 		(
-			(*if ope = "=" orelse ope = "!=" then 
+			if ope = "=" orelse ope = "!=" then 
 				(let
-					val tv1 = (teval (expr1,env))
-					val tv2 = (teval (expr2,env))
+					val eExp1 = (eval (expr1,env))
+					val eExp2 = (eval (expr2,env))
 				in
-					if tv1 = tv2
-					then 
-						if checkEqType tv1
-						then BoolT
-						else
-							raise UnknownType
-					else
-						raise NotEqTypes
+					if ope = "=" then BoolV(eExp1 = eExp2) else BoolV(not (eExp1 = eExp2))
 			end) 
-			else if ope = "<" orelse ope = "<=" then
+			(*else if ope = "<" orelse ope = "<=" then
 				(let
 					val tv1 = (teval (expr1,env))
 					val tv2 = (teval (expr2,env))
@@ -154,8 +147,8 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 									raise UnknownType 
 							else
 								raise NotEqTypes
-					end)
-				else*) if ope = "::" then
+					end) *)
+				else if ope = "::" then
 					(let
 							val eExp1 = (eval (expr1,env))
 							val eExp2 = (eval (expr2,env))
