@@ -225,9 +225,9 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					case texpr of 
 						SeqT(IntT) => IntT
 					|	SeqT(BoolT) => BoolT
-					|	SeqT(FunT(a,b)) => FunT(a,b)
+					|	SeqT(ListT []) => raise EmptySeq
 					|	SeqT(ListT(l)) => ListT(l)
-					|	SeqT(SeqT([])) => raise EmptySeq
+					|	SeqT(FunT(a,b)) => FunT(a,b)
 					|	SeqT(SeqT(a)) => SeqT(a)
 					| _ => raise UnknownType
 				end
@@ -236,7 +236,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					val texpr = (teval (expr,env))
 				in
 					case texpr of 
-					SeqT([]) => rasie EmptySeq
+					SeqT(ListT []) => raise EmptySeq
 					| SeqT(_) => texpr
 					| _ => raise UnknownType
 				end
