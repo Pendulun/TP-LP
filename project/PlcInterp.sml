@@ -9,13 +9,10 @@ exception TLEmptySeq
 exception ValueNotFoundInMatch
 exception NotAFunc
 
-(*fun checkEqType (t:plcType):bool = 
-	case t of BoolT => true
-		| IntT => true
-		| ListT([]) => true
-		| SeqT (t2) => (checkEqType (t2))
-		| ListT(l) => (List.all (checkEqType) l)
-		| FunT(_) => false;*)
+fun getIntV(n:plcVal) = 
+	case n of IntV(a) => a
+		| _ => raise Impossible 
+
 
 fun eval (e:expr,env:((string * plcVal) list)) = 
 	case e of 
@@ -106,21 +103,15 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					val eExp2 = (eval (expr2,env))
 				in
 					if ope = "=" then BoolV(eExp1 = eExp2) else BoolV(not (eExp1 = eExp2))
-			end) 
-			(*else if ope = "<" orelse ope = "<=" then
-				(let
-					val tv1 = (teval (expr1,env))
-					val tv2 = (teval (expr2,env))
-				in
-					if tv1 = tv2 
-					then 
-						if tv1 = IntT
-							then BoolT
-						else
-							raise UnknownType 
-					else
-						raise NotEqTypes
 				end) 
+			else if ope = "<" orelse ope = "<=" then
+				(let
+					val eExp1 = (eval (expr1,env))
+					val eExp2 = (eval (expr2,env))
+				in
+					if ope = "<" then BoolV(getIntV(eExp1) < getIntV(eExp2)) else BoolV((getIntV(eExp1) <= getIntV(eExp2)))
+				end) 
+			(*
 			else if ope = "+" orelse ope = "-" orelse ope = "*" orelse ope = "/" then
 				(let
 					val tv1 = (teval (expr1,env))
