@@ -17,6 +17,10 @@ fun getBoolV(v:plcVal) =
 	case v of BoolV(a) => a
 		| _ => raise Impossible 
 
+fun getVarName(v:expr) =
+	case v of Var(x) => x
+		| _ => raise Impossible
+
 
 fun eval (e:expr,env:((string * plcVal) list)) = 
 	case e of 
@@ -183,21 +187,32 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			in
 				eval(prog,(nome,Clos(nome,lista,corpo,env))::env)
 			end
-		
 		| Anon(tipos, lista, corpo) => 
 			Clos("",lista, corpo, env)
-	(*| Call(f,params) => 
-	let
-		val fType = teval(f,env)
-		val tparams = teval(params, env)
-	in
-		case fType of 
-		FunT(tipos,texpr) => 
-			if tparams = tipos
-			then
-				texpr
-			else 
-				raise CallTypeMisM
-		| _ =>	raise NotFunc
-	end
-	*)
+		| Call(f,params) => 
+			let
+				val vf = (lookup env (getVarName(f)))
+			in
+				case vf of 
+					(*Função anônima*)
+					(Clos("", lista, corpo, envP)) =>
+						(let
+		                    (* A avaliação dos parâmetros reais*)
+		                    val paramsEv = eval(params,env);
+		                    (* O ambiente em que o corpo da função será avaliado, sem a própria função*)
+		                    val envNovoCorpo = (lista, paramsEv)::envP
+		                in
+		                    eval(corpo,envNovoCorpo)
+		                end)
+		            (*Função recursiva*)
+	                | (Clos(f, lista, corpo, envP)) =>
+						(let
+		                    (* A avaliação dos parâmetros reais*)
+		                    val paramsEv = eval(params,env);
+		                    (* O ambiente em que o corpo da função será avaliado, com a própria função*)
+		                    val envNovoCorpo = (lista, paramsEv)::(f,vf)::envP
+		                in
+		                    eval(corpo,envNovoCorpo)
+		                end)
+		            | _ => raise Impossible
+			end
