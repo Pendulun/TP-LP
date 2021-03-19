@@ -168,13 +168,13 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 									case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
 									| SeqV(b) => SeqV(eExp1::b))
 					end)
-				(*else if ope = ";" then
+				else if ope = ";" then
 					(let
-							val tv1 = (teval (expr1,env))
-							val tv2 = (teval (expr2,env))
+							val eExp1 = (eval (expr1,env))
+							val eExp2 = (eval (expr2,env))
 						in
-							tv2
-					end)*)
+							eExp2
+					end)
 				else raise NotFunc
 		)
 	
