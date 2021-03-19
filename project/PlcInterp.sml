@@ -163,6 +163,18 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					ListV(lista) => List.nth (lista, n-1)
 					| _ => raise Impossible
 			end
+		| Match(expComp, listaOp) => 
+			let
+				val eExprComp = eval(expComp,env)
+				val opcoesValidas = List.filter (fn((opcao,retorno)) => 
+						case opcao of 
+							SOME(tipo) => (eval (tipo,env)) = eExprComp
+							| NONE => true
+						)  listaOp
+				val opcaoEscolhida = List.nth (opcoesValidas, 0)
+			in
+				eval(#2(opcaoEscolhida),env)
+			end
 		
 	(*| Anon(tipos, lista, expr) => 
 	let
@@ -184,33 +196,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 				raise CallTypeMisM
 		| _ =>	raise NotFunc
 	end
-	| Match(expComp, listaOp) => 
-		let
-			val texprComp = teval(expComp,env)
-		in
-			if List.null listaOp 
-			then
-				raise NoMatchResults
-			else
-				if List.all (fn((opcao,retorno)) => 
-					case opcao of 
-						SOME(tipo) => (teval (tipo,env)) = texprComp
-						| NONE => true
-					)  listaOp
-				then
-					(let
-						val tPrimRetorno = teval((#2 (hd(listaOp))),env)
-					in
-						if List.all (fn((opcao,retorno)) => (teval(retorno,env)) = tPrimRetorno) listaOp
-						then 
-							tPrimRetorno
-						else
-							raise MatchResTypeDiff
-					end)
-					
-				else
-					raise MatchCondTypesDiff
-		end
+	
 	
 	| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
 		let
