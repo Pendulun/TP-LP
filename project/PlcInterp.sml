@@ -64,18 +64,15 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 						IntV(n) => IntV(~n)
 						| _ => raise Impossible
 				end
-			(*else if ope = "hd" then
+			else if ope = "hd" then
 				let
-					val texpr = (teval (expr,env))
+					val eExpr = (eval (expr,env))
 				in
-					case texpr of 
-						SeqT(IntT) => IntT
-					|	SeqT(BoolT) => BoolT
-					|	SeqT(FunT(a,b)) => FunT(a,b)
-					|	SeqT(ListT(l)) => ListT(l)
-					|	SeqT(SeqT(a)) => SeqT(a)
-					| _ => raise UnknownType
-				end*)
+					case eExpr of 
+						SeqV([]) => raise HDEmptySeq
+						| SeqV(lista) => hd(lista)
+						| _ => raise Impossible
+				end
 			else raise Impossible
 			(*else if ope = "tl" then
 				let
