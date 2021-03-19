@@ -99,63 +99,63 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					ListV([])
 				end
 			else raise Impossible
-	| Prim2(ope,expr1,expr2) =>
-		(
-			if ope = "=" orelse ope = "!=" then 
-				(let
-					val eExp1 = (eval (expr1,env))
-					val eExp2 = (eval (expr2,env))
-				in
-					if ope = "=" then BoolV(eExp1 = eExp2) else BoolV(not (eExp1 = eExp2))
-				end) 
-			else if ope = "<" orelse ope = "<=" then
-				(let
-					val eExp1 = (eval (expr1,env))
-					val eExp2 = (eval (expr2,env))
-				in
-					if ope = "<" then BoolV(getIntV(eExp1) < getIntV(eExp2)) else BoolV(getIntV(eExp1) <= getIntV(eExp2))
-				end) 
-			else if ope = "+" orelse ope = "-" orelse ope = "*" orelse ope = "/" then
-				(let
-					val eExp1 = (eval (expr1,env))
-					val eExp2 = (eval (expr2,env))
-				in
-					if ope = "+" then IntV(getIntV(eExp1)+getIntV(eExp2))
-					else if ope = "-" then IntV(getIntV(eExp1)-getIntV(eExp2))
-					else if ope = "*" then IntV(getIntV(eExp1)*getIntV(eExp2))
-					else if ope = "/" then IntV(getIntV(eExp1) div getIntV(eExp2))
-					else raise Impossible
-				end)
-			else if ope = "&&" then
+		| Prim2(ope,expr1,expr2) =>
+			(
+				if ope = "=" orelse ope = "!=" then 
 					(let
 						val eExp1 = (eval (expr1,env))
 						val eExp2 = (eval (expr2,env))
 					in
-						BoolV(getBoolV(eExp1) andalso getBoolV(eExp2))
+						if ope = "=" then BoolV(eExp1 = eExp2) else BoolV(not (eExp1 = eExp2))
+					end) 
+				else if ope = "<" orelse ope = "<=" then
+					(let
+						val eExp1 = (eval (expr1,env))
+						val eExp2 = (eval (expr2,env))
+					in
+						if ope = "<" then BoolV(getIntV(eExp1) < getIntV(eExp2)) else BoolV(getIntV(eExp1) <= getIntV(eExp2))
+					end) 
+				else if ope = "+" orelse ope = "-" orelse ope = "*" orelse ope = "/" then
+					(let
+						val eExp1 = (eval (expr1,env))
+						val eExp2 = (eval (expr2,env))
+					in
+						if ope = "+" then IntV(getIntV(eExp1)+getIntV(eExp2))
+						else if ope = "-" then IntV(getIntV(eExp1)-getIntV(eExp2))
+						else if ope = "*" then IntV(getIntV(eExp1)*getIntV(eExp2))
+						else if ope = "/" then IntV(getIntV(eExp1) div getIntV(eExp2))
+						else raise Impossible
 					end)
-			else if ope = "::" then
-				(let
-					val eExp1 = (eval (expr1,env))
-					val eExp2 = (eval (expr2,env))
-				in
-					case eExp1 of SeqV(a) => (
-						case eExp2 of SeqV(b) => SeqV(a@b)
-							| _ => SeqV(eExp2::a)
-							)
-					| _ => (
-							case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
-							| SeqV(b) => SeqV(eExp1::b))
-				end)
-			else if ope = ";" then
-				(let
-					val eExp1 = (eval (expr1,env))
-					val eExp2 = (eval (expr2,env))
-				in
-					eExp2
-				end)
-				else raise NotFunc
-		)
-	
+				else if ope = "&&" then
+						(let
+							val eExp1 = (eval (expr1,env))
+							val eExp2 = (eval (expr2,env))
+						in
+							BoolV(getBoolV(eExp1) andalso getBoolV(eExp2))
+						end)
+				else if ope = "::" then
+					(let
+						val eExp1 = (eval (expr1,env))
+						val eExp2 = (eval (expr2,env))
+					in
+						case eExp1 of SeqV(a) => (
+							case eExp2 of SeqV(b) => SeqV(a@b)
+								| _ => SeqV(eExp2::a)
+								)
+						| _ => (
+								case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
+								| SeqV(b) => SeqV(eExp1::b))
+					end)
+				else if ope = ";" then
+					(let
+						val eExp1 = (eval (expr1,env))
+						val eExp2 = (eval (expr2,env))
+					in
+						eExp2
+					end)
+					else raise NotFunc
+			)
+		
 	(*| Anon(tipos, lista, expr) => 
 	let
 		val texpr = teval(expr, (lista,tipos)::env)
