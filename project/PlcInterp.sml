@@ -177,20 +177,16 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			end
 		| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
 			let
+				(*
 				val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
-				val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)
-
+				val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)*)
 			in
 				eval(prog,(nome,Clos(nome,lista,corpo,env))::env)
 			end
 		
-	(*| Anon(tipos, lista, expr) => 
-	let
-		val texpr = teval(expr, (lista,tipos)::env)
-	in
-		FunT(tipos, texpr)
-	end
-	| Call(f,params) => 
+		| Anon(tipos, lista, corpo) => 
+			Clos("",lista, corpo, env)
+	(*| Call(f,params) => 
 	let
 		val fType = teval(f,env)
 		val tparams = teval(params, env)
