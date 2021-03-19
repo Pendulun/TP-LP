@@ -155,6 +155,14 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					end)
 					else raise NotFunc
 			)
+		| Item(n,expr) =>
+			let
+				val eExpr = eval (expr,env)
+			in
+				case eExpr of
+					ListV(lista) => List.nth (lista, n-1)
+					| _ => raise Impossible
+			end
 		
 	(*| Anon(tipos, lista, expr) => 
 	let
@@ -215,17 +223,6 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			else
 				raise WrongRetType
 		end
-	
-	| Item(n,expr) =>
-	let
-		val texpr = teval (expr,env)
-	in
-		case texpr of ListT([]) => raise ListOutOfRange 
-			| ListT(h::t) => if n > ((List.length (h::t))) orelse n < 1
-				then raise ListOutOfRange
-				else List.nth ((h::t),n-1)
-			| _ => raise OpNonList
-	end
 	
 	
 	*)
