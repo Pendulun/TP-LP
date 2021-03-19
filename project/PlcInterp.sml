@@ -46,6 +46,58 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		else
 			raise Impossible
 		| ESeq(t) => SeqV([])
+		| Prim1(ope,expr) => 
+			if ope = "!" then
+				let
+					val eExp = eval(expr,env)
+				in
+					case eExp of 
+						BoolV(true) => BoolV(false)
+						| BoolV (false) => BoolV(true)
+						| _ => raise Impossible
+				end
+			else raise Impossible
+			(*else if ope = "-" then
+				if (teval (expr,env)) = IntT
+				then
+					IntT
+				else
+					raise WrongRetType
+			else if ope = "hd" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					case texpr of 
+						SeqT(IntT) => IntT
+					|	SeqT(BoolT) => BoolT
+					|	SeqT(FunT(a,b)) => FunT(a,b)
+					|	SeqT(ListT(l)) => ListT(l)
+					|	SeqT(SeqT(a)) => SeqT(a)
+					| _ => raise UnknownType
+				end
+			else if ope = "tl" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					case texpr of 
+						SeqT(_) => texpr
+					| _ => raise UnknownType
+				end
+			else if ope = "ise" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					case texpr of 
+						SeqT(_) => BoolT
+					| _ => raise UnknownType
+				end
+			else if ope = "print" then
+				let
+					val texpr = (teval (expr,env))
+				in
+					ListT([])
+				end
+			else raise NotFunc *)
 	(*| Prim2(ope,expr1,expr2) =>
 		(
 			if ope = "=" orelse ope = "!=" then 
@@ -196,51 +248,4 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 	end
 	
 	
-	| Prim1(ope,expr) => 
-			if ope = "!" then
-				if (teval (expr,env)) = BoolT
-				then
-					BoolT
-				else
-					raise WrongRetType
-			else if ope = "-" then
-				if (teval (expr,env)) = IntT
-				then
-					IntT
-				else
-					raise WrongRetType
-			else if ope = "hd" then
-				let
-					val texpr = (teval (expr,env))
-				in
-					case texpr of 
-						SeqT(IntT) => IntT
-					|	SeqT(BoolT) => BoolT
-					|	SeqT(FunT(a,b)) => FunT(a,b)
-					|	SeqT(ListT(l)) => ListT(l)
-					|	SeqT(SeqT(a)) => SeqT(a)
-					| _ => raise UnknownType
-				end
-			else if ope = "tl" then
-				let
-					val texpr = (teval (expr,env))
-				in
-					case texpr of 
-						SeqT(_) => texpr
-					| _ => raise UnknownType
-				end
-			else if ope = "ise" then
-				let
-					val texpr = (teval (expr,env))
-				in
-					case texpr of 
-						SeqT(_) => BoolT
-					| _ => raise UnknownType
-				end
-			else if ope = "print" then
-				let
-					val texpr = (teval (expr,env))
-				in
-					ListT([])
-				end
-			else raise NotFunc*)
+	*)
