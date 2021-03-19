@@ -13,6 +13,10 @@ fun getIntV(n:plcVal) =
 	case n of IntV(a) => a
 		| _ => raise Impossible 
 
+fun getBoolV(v:plcVal) = 
+	case v of BoolV(a) => a
+		| _ => raise Impossible 
+
 
 fun eval (e:expr,env:((string * plcVal) list)) = 
 	case e of 
@@ -121,41 +125,34 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					else if ope = "*" then IntV(getIntV(eExp1)*getIntV(eExp2))
 					else if ope = "/" then IntV(getIntV(eExp1) div getIntV(eExp2))
 					else raise Impossible
-				end) (*
+				end)
 			else if ope = "&&" then
 					(let
-							val tv1 = (teval (expr1,env))
-							val tv2 = (teval (expr2,env))
-						in
-							if tv1 = tv2
-							then 
-								if tv1 = BoolT
-								then BoolT
-								else
-									raise UnknownType 
-							else
-								raise NotEqTypes
-					end) *)
-				else if ope = "::" then
-					(let
-							val eExp1 = (eval (expr1,env))
-							val eExp2 = (eval (expr2,env))
-						in
-							case eExp1 of SeqV(a) => (
-									case eExp2 of SeqV(b) => SeqV(a@b)
-									| _ => SeqV(eExp2::a)
-									)
-							| _ => (
-									case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
-									| SeqV(b) => SeqV(eExp1::b))
+						val eExp1 = (eval (expr1,env))
+						val eExp2 = (eval (expr2,env))
+					in
+						BoolV(getBoolV(eExp1) andalso getBoolV(eExp2))
 					end)
-				else if ope = ";" then
-					(let
-							val eExp1 = (eval (expr1,env))
-							val eExp2 = (eval (expr2,env))
-						in
-							eExp2
-					end)
+			else if ope = "::" then
+				(let
+					val eExp1 = (eval (expr1,env))
+					val eExp2 = (eval (expr2,env))
+				in
+					case eExp1 of SeqV(a) => (
+						case eExp2 of SeqV(b) => SeqV(a@b)
+							| _ => SeqV(eExp2::a)
+							)
+					| _ => (
+							case eExp2 of SeqV([]) => SeqV(eExp1::[]) 
+							| SeqV(b) => SeqV(eExp1::b))
+				end)
+			else if ope = ";" then
+				(let
+					val eExp1 = (eval (expr1,env))
+					val eExp2 = (eval (expr2,env))
+				in
+					eExp2
+				end)
 				else raise NotFunc
 		)
 	
