@@ -88,7 +88,8 @@ fun teval (e:expr,env:((string * plcType) list)) =
 							raise UnknownType 
 					else
 						raise NotEqTypes
-				end) else if ope = "&&" then
+				end) 
+			else if ope = "&&" then
 					(let
 							val tv1 = (teval (expr1,env))
 							val tv2 = (teval (expr2,env))

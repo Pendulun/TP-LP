@@ -109,23 +109,20 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					val eExp1 = (eval (expr1,env))
 					val eExp2 = (eval (expr2,env))
 				in
-					if ope = "<" then BoolV(getIntV(eExp1) < getIntV(eExp2)) else BoolV((getIntV(eExp1) <= getIntV(eExp2)))
+					if ope = "<" then BoolV(getIntV(eExp1) < getIntV(eExp2)) else BoolV(getIntV(eExp1) <= getIntV(eExp2))
 				end) 
-			(*
 			else if ope = "+" orelse ope = "-" orelse ope = "*" orelse ope = "/" then
 				(let
-					val tv1 = (teval (expr1,env))
-					val tv2 = (teval (expr2,env))
+					val eExp1 = (eval (expr1,env))
+					val eExp2 = (eval (expr2,env))
 				in
-					if tv1 = tv2 
-					then 
-						if tv1 = IntT
-							then IntT
-						else
-							raise UnknownType 
-					else
-						raise NotEqTypes
-				end) else if ope = "&&" then
+					if ope = "+" then IntV(getIntV(eExp1)+getIntV(eExp2))
+					else if ope = "-" then IntV(getIntV(eExp1)-getIntV(eExp2))
+					else if ope = "*" then IntV(getIntV(eExp1)*getIntV(eExp2))
+					else if ope = "/" then IntV(getIntV(eExp1) div getIntV(eExp2))
+					else raise Impossible
+				end) (*
+			else if ope = "&&" then
 					(let
 							val tv1 = (teval (expr1,env))
 							val tv2 = (teval (expr2,env))
