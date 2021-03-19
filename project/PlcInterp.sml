@@ -175,6 +175,14 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			in
 				eval(#2(opcaoEscolhida),env)
 			end
+		| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
+			let
+				val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
+				val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)
+
+			in
+				eval(prog,(nome,Clos(nome,lista,corpo,env))::env)
+			end
 		
 	(*| Anon(tipos, lista, expr) => 
 	let
@@ -196,19 +204,4 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 				raise CallTypeMisM
 		| _ =>	raise NotFunc
 	end
-	
-	
-	| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
-		let
-			val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
-			val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)
-		in
-			if tcorpo = tRetorno 
-			then
-				tprog
-			else
-				raise WrongRetType
-		end
-	
-	
 	*)
