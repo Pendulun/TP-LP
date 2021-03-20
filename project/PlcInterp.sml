@@ -60,9 +60,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 				let
 					val eExp = eval(expr,env)
 				in
-					case eExp of 
-						IntV(n) => IntV(~n)
-						| _ => raise Impossible
+					IntV(~(getIntV(eExp)))
 				end
 			else if ope = "hd" then
 				let
