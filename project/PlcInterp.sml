@@ -184,13 +184,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					eval(#2((List.nth (opcoesValidas, 0))),env)
 			end
 		| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
-			let
-				(*
-				val tcorpo = teval(corpo,(nome,FunT(tipos,tRetorno))::(lista, tipos)::env)
-				val tprog = teval(prog, (nome,FunT(tipos,tRetorno))::env)*)
-			in
 				eval(prog,(nome,Clos(nome,lista,corpo,env))::env)
-			end
 		| Anon(tipos, lista, corpo) => 
 			Clos("",lista, corpo, env)
 		| Call(f,params) => 
@@ -220,3 +214,4 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		                end)
 		            | _ => raise NotAFunc
 			end
+		| _ => raise Impossible
