@@ -32,12 +32,9 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			let
 				val eExp1 = eval(exp1,env)
 			in
-				case eExp1 of 
-					BoolV(b) => 
-						if (b) 
-						then eval(v1,env)
-						else eval(v2,env)
-					| _ => raise Impossible
+				if (getBoolV(eExp1)) 
+				then eval(v1,env)
+				else eval(v2,env)
 			end
 			
 		| Let(variavel, value, prog) => 
@@ -214,4 +211,3 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		                end)
 		            | _ => raise NotAFunc
 			end
-		| _ => raise Impossible
