@@ -20,13 +20,15 @@ open PlcFrontEnd;
 
 fun run (e:expr) =
 	(let
-		val typeEnv = [];
-		val valueEnv = [];
-
-		val eTypeChecking = teval(e,typeEnv);
-		val eInterpreting = eval(e,valueEnv);
+		val typeEnv = []; (*("x",IntT)::[];*)
+		val valueEnv = []; (*("x", IntV(5))::[];*)
 	in
-		(val2string eInterpreting) ^ " : " ^ (type2string eTypeChecking)
+		let 
+			val eTypeChecking = teval(e,typeEnv);
+			val eInterpreting = eval(e,valueEnv);
+		in
+			(val2string eInterpreting) ^ " : " ^ (type2string eTypeChecking)
+		end
 	end) handle 
 		(*Checker*)
 		EmptySeq => "***TypeCheckerError: Operacao hd ou tl em sequencia de tipo Nil.***"
@@ -38,7 +40,7 @@ fun run (e:expr) =
 		| NoMatchResults => "***TypeCheckerError: Lista de expressoes de Match e vazia.***"
 		| MatchResTypeDiff => "***TypeCheckerError: Tipo de caso de Match difere dos demais.***"
 		| MatchCondTypesDiff => "***TypeCheckerError: Tipo das opcoes de Match difere do tipo da expressao passada para Match.***"
-		| CallTypeMisM => "***TypeCheckerError: Tipo de parametro passado para funcao nao suportado.***"
+		| CallTypeMisM => "***TypeCheckerError: Tipo de parametro passado para funcao diferente do esperado.***"
 		| NotFunc => "***TypeCheckerError: Tentativa de chamar algo que nao e uma funcao.***"
 		| ListOutOfRange => "***TypeCheckerError: Tentativa de acessar uma posicao fora dos limites da lista.***"
 		| OpNonList => "***TypeCheckerError: Tentativa de acessar um elemento em uma expressao que nao e uma lista.***"
@@ -53,8 +55,21 @@ fun run (e:expr) =
 
 (*val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";*)
 
-(*val expr = fromString "fun rec f(Int x) : Int = f(x-1); f(0)"; 
-run (expr);
+(*val expr = fromString "print 5; print 6"; *)
+(*val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",ConI 12));*)
+(*Casos do monitor*)
+(*
+val expr = If(Prim2("=", ConI 11, ConI 12), ConI 1, ConI 0);
+val expr = Let("b", Prim2("=", ConI 1, ConI 2), If(Var "b", ConI 3, ConI 4));
+
+val expr = Letrec("f1",IntT,"x",IntT,Prim2 ("+",Var "x",ConI 1),Call (Var "f1",ConI 12));
+val expr = Let("b", Prim2("=", ConI 1, ConI 2),If(Var "b", Var "b", ConI 6));
+val expr = Let("f",Anon (BoolT,"x",If (Var "x",ConI 11,ConI 22)),Call (Var "f",ConI 0));
+val expr = Letrec("f",BoolT,"x",BoolT,If (Var "x",ConI 11,ConI 22), Call (Var "f",ConB true));
 *)
+val expr = fromString "print x";
+(*
+*)
+run (expr);
 (*Comentar o use Absyn.sml de testParserCases.sml*)
-List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases
+(*List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases*)
