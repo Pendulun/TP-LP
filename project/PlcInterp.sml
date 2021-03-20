@@ -54,10 +54,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 				let
 					val eExp = eval(expr,env)
 				in
-					case eExp of 
-						BoolV(true) => BoolV(false)
-						| BoolV (false) => BoolV(true)
-						| _ => raise Impossible
+					BoolV(not (getBoolV(eExp)))
 				end
 			else if ope = "-" then
 				let
