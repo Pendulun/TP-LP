@@ -1,5 +1,6 @@
 (* PlcInterp *)
 
+(*Comentei esses imports por que já os importo em Plc.sml*)
 (*use "Environ.sml";
 use "Absyn.sml";*) 
 
@@ -175,9 +176,12 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 							SOME(tipo) => (eval (tipo,env)) = eExprComp
 							| NONE => true
 						)  listaOp
-				val opcaoEscolhida = List.nth (opcoesValidas, 0)
 			in
-				eval(#2(opcaoEscolhida),env)
+				if(List.null opcoesValidas) 
+				then
+					raise ValueNotFoundInMatch
+				else
+					eval(#2((List.nth (opcoesValidas, 0))),env)
 			end
 		| Letrec(nome, tipos, lista, tRetorno, corpo, prog) => 
 			let
@@ -214,5 +218,5 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		                in
 		                    eval(corpo,envNovoCorpo)
 		                end)
-		            | _ => raise Impossible
+		            | _ => raise NotAFunc
 			end

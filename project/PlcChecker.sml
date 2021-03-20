@@ -1,4 +1,5 @@
 (* PlcChecker *)
+(*Comentei esses imports por que já os importo em Plc.sml*)
 (*use "Environ.sml";
 use "Absyn.sml";*)
 
