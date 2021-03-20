@@ -10,6 +10,7 @@ use "PlcParser.yacc.sig";
 use "PlcParser.yacc.sml";
 use "PlcLexer.lex.sml";
 use "Parse.sml";
+use "testParserCases.sml";
 
 Control.Print.printLength := 1000;
 Control.Print.printDepth  := 1000;
@@ -48,8 +49,12 @@ fun run (e:expr) =
 		| HDEmptySeq => "***InterpreterError: Tentativa de operacao hd em sequencia vazia.***"
 		| TLEmptySeq => "***InterpreterError: Tentativa de operacao tl em sequencia vazia.***"
 		| ValueNotFoundInMatch => "***InterpreterError: Nenhuma opcao de Match casou com a expressao passada para Match.***"
-		| NotAFunc => "***InterpreterError: Tentativa de chamar algo que nao e uma funcao.***"
+		| NotAFunc => "***InterpreterError: Tentativa de chamar algo que nao e uma funcao.***";
 
 (*val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";*)
-val expr = fromString "hd(([Int] []))"; 
+
+(*val expr = fromString "fun rec f(Int x) : Int = f(x-1); f(0)"; 
 run (expr);
+*)
+(*Comentar o use Absyn.sml de testParserCases.sml*)
+List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases
