@@ -28,22 +28,27 @@ fun run (e:expr) =
 		(val2string eInterpreting) ^ " : " ^ (type2string eTypeChecking)
 	end) handle 
 		(*Checker*)
-		EmptySeq => "***Erro: hd ou tl em sequencia de tipo Nil.***"
-		| UnknownType => "***Erro: Ocorreu erro de tipagem.***"
-		| NotEqTypes => "***Erro: Comparacao entre tipos diferentes.***"
-		| WrongRetType => "***Erro: Tipo de retorno de funcao nao condiz com seu corpo.***"
-		| DiffBrTypes => "***Erro: Tipos dos branches de If divergem.***"
-		| IfCondNotBool => "***Erro: Condicao de If nao e do tipo booleano.***"
-		| NoMatchResults => "***Erro: Lista de expressoes de Match e vazia.***"
-		| MatchResTypeDiff => "***Erro: Tipo de caso de Match difere dos demais.***"
-		| MatchCondTypesDiff => "***Erro: Tipo das opcoes de Match difere do tipo da expressao passada para Match.***"
-		| CallTypeMisM => "***Tipo de parametro passado para funcao nao suportado.***"
-		| NotFunc => "***Erro: Tentativa de chamar algo que nao e uma funcao.***"
-		| ListOutOfRange => "***Erro: Tentativa de acessar uma posicao fora dos limites da lista.***"
-		| OpNonList => "***Erro: Tentativa de acessar um elemento em uma expressao que nao e uma lista.***"
+		EmptySeq => "***TypeCheckerError: Operacao hd ou tl em sequencia de tipo Nil.***"
+		| UnknownType => "***TypeCheckerError: Ocorreu erro de tipagem.***"
+		| NotEqTypes => "***TypeCheckerError: Comparacao entre tipos diferentes.***"
+		| WrongRetType => "***TypeCheckerError: Tipo de retorno de funcao nao condiz com seu corpo.***"
+		| DiffBrTypes => "***TypeCheckerError: Tipos dos branches de If divergem.***"
+		| IfCondNotBool => "***TypeCheckerError: Condicao de If nao e do tipo booleano.***"
+		| NoMatchResults => "***TypeCheckerError: Lista de expressoes de Match e vazia.***"
+		| MatchResTypeDiff => "***TypeCheckerError: Tipo de caso de Match difere dos demais.***"
+		| MatchCondTypesDiff => "***TypeCheckerError: Tipo das opcoes de Match difere do tipo da expressao passada para Match.***"
+		| CallTypeMisM => "***TypeCheckerError: Tipo de parametro passado para funcao nao suportado.***"
+		| NotFunc => "***TypeCheckerError: Tentativa de chamar algo que nao e uma funcao.***"
+		| ListOutOfRange => "***TypeCheckerError: Tentativa de acessar uma posicao fora dos limites da lista.***"
+		| OpNonList => "***TypeCheckerError: Tentativa de acessar um elemento em uma expressao que nao e uma lista.***"
 		(*Environ*)
-		| SymbolNotFound => "***Erro: Uma variavel ou funcao nao foi declarada.***"
-		| 
+		| SymbolNotFound => "***EnvironmentError: Uma variavel ou funcao nao foi declarada.***"
+		(*Interp*)
+		| Impossible => "***InterpreterError: Ocorreu erro durante a interpretacao.***"
+		| HDEmptySeq => "***InterpreterError: Tentativa de operacao hd em sequencia vazia.***"
+		| TLEmptySeq => "***InterpreterError: Tentativa de operacao tl em sequencia vazia.***"
+		| ValueNotFoundInMatch => "***InterpreterError: Nenhuma opcao de Match casou com a expressao passada para Match.***"
+		| NotAFunc => "***InterpreterError: Tentativa de chamar algo que nao e uma funcao.***"
 
 (*val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";*)
 val expr = fromString "hd(([Int] []))"; 
