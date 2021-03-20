@@ -24,10 +24,15 @@ fun getVarName(v:expr) =
 
 
 fun eval (e:expr,env:((string * plcVal) list)) = 
-	case e of 
+	(case e of 
 		ConI(n) => IntV(n)
 		| ConB(b) => BoolV(b)
-		| Var(x) => lookup env x
+		| Var(x) => 
+			(let
+				val valor = (lookup env x) 
+			in
+				valor
+			end) 
 		| If(exp1,v1,v2) => 
 			let
 				val eExp1 = eval(exp1,env)
@@ -180,7 +185,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		| Anon(tipos, lista, corpo) => 
 			Clos("",lista, corpo, env)
 		| Call(f,params) => 
-			let
+			(let
 				val vf = (lookup env (getVarName(f)))
 			in
 				case vf of 
@@ -205,4 +210,4 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 		                    eval(corpo,envNovoCorpo)
 		                end)
 		            | _ => raise NotAFunc
-			end
+			end))
