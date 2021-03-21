@@ -133,6 +133,41 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "print(if true then 3 else 0)";*)
 (*val expr = fromString "print(3::2::1::([Int] []))";*)
 
+(*Prim2*)
+(*val expr = fromString "5=2";*)
+(*val expr = fromString "5=true";*)
+(*val expr = fromString "fun a(Int x) = x; fun b(Int x) = x; a = b";*)
+(*val expr = fromString "var a = 3; var b = 3; a=b";*)
+(*val expr = fromString "var a = 3; fun a(Int x) = -3; a";*)
+(*val expr = fromString "fun a(Int x) = -3; var a = 3; a";*)
+
+(*val expr = fromString "5!=2";*)
+(*val expr = fromString "5!=true";*)
+
+(*val expr = fromString "3<4";*)
+(*val expr = fromString "4<=4";*)
+(*val expr = fromString "true<false";*)
+(*val expr = fromString "4<false";*)
+
+(*val expr = fromString "5+true";*)
+(*val expr = fromString "true+true";*)
+(*val expr = fromString "5+3";*)
+(*val expr = fromString "5-3";*)
+(*val expr = fromString "5*3";*)
+(*val expr = fromString "10/5";*)
+(*val expr = fromString "10/(if true then 5 else 2)";*)
+
+(*val expr = fromString "true && true";*)
+(*val expr = fromString "true && 5";*)
+(*val expr = fromString "(if true then 5 else 3) && 5";*)
+
+(*val expr = fromString "(1::2::3::([Int] []))::(4::5::6::([Int] []))::([[Int]] [])";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; f::g::([Int -> Int] [])";*)
+(*val expr = fromString "1::true::([[Int]] [])";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = f::g::([Int -> Int] []); (hd(listaF))(10)";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = f::g::([Int -> Int] []); (hd(tl(listaF)))(10)";*)
+
+
 
 
 (*Para executar o Interpretador*)
