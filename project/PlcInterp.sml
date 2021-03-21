@@ -167,7 +167,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					in
 						eExp2
 					end)
-				else raise NotFunc
+				else raise Impossible
 			)
 		| Item(n,expr) =>
 			let
