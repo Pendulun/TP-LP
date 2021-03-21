@@ -1,4 +1,5 @@
 (* PlcChecker *)
+
 (*Comentei esses imports por que já os importo em Plc.sml*)
 (*use "Environ.sml";
 use "Absyn.sml";*)
@@ -66,7 +67,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 			if (checkIsSeqType (t)) 
 			then 
 				t 
-			else raise WrongRetType (*TROCAR DEPOIS*)
+			else raise WrongRetType
 		| Prim1(ope,expr) => 
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT
@@ -130,7 +131,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 							then 
 								BoolT
 							else
-								raise UnknownType (*TROCAR DEPOIS*)
+								raise UnknownType
 						else
 							raise NotEqTypes
 					end) 
