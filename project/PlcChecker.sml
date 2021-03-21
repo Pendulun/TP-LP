@@ -260,6 +260,5 @@ fun teval (e:expr,env:((string * plcType) list)) =
 							raise CallTypeMisM
 					| _ => raise NotFunc
 			end
-(*AQUI FORA DE TUDO, ALGUMA EXCEÇÃO? E em outros "mais afora"?*)
 
 	

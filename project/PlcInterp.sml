@@ -220,4 +220,3 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 			        | _ => raise NotAFunc
 			end)
 	)
-(*AQUI FORA DE TUDO, ALGUMA EXCEÇÃO? E em outros "mais afora"?*)
