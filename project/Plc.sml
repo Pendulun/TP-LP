@@ -55,7 +55,7 @@ fun run (e:expr) =
 		| NotAFunc => "***InterpreterError: Tentativa de chamar algo que nao e uma funcao.***";
 
 
-(*Usando testParserCases.sml. (OBS.: Comentar o use Absyn.sml)*)
+(*Usando testParserCases.sml. (OBS.: Comentar o use Absyn.sml de testParserCases)*)
 (*List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases;**)
 
 (*Casos Corretos Fórum*)
