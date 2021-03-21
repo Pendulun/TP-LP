@@ -155,10 +155,10 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 								SeqV(a@b)
 								| _ => SeqV(eExp2::a)
 							)
-						| _ => (case eExp2 of SeqV([]) => 
-									SeqV(eExp1::[]) 
-									| SeqV(b) => SeqV(eExp1::b)
-								)
+							| _ => (case eExp2 of SeqV([]) => 
+										SeqV(eExp1::[]) 
+										| SeqV(b) => SeqV(eExp1::b)
+									)
 					end)
 				else if ope = ";" then
 					(let

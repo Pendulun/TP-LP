@@ -162,15 +162,11 @@ fun teval (e:expr,env:((string * plcType) list)) =
 						val tv1 = (teval (expr1,env))
 						val tv2 = (teval (expr2,env))
 					in
-						if tv1 = tv2
+						if tv1 = tv2 andalso tv1 = BoolT
 						then 
-							if tv1 = BoolT
-							then 
-								BoolT
-							else
-								raise UnknownType 
+							BoolT
 						else
-							raise NotEqTypes
+							raise UnknownType
 					end)
 				else if ope = "::" then
 					(let
