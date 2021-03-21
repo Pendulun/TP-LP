@@ -74,3 +74,6 @@ val expr = fromString "fun rec f(Int a): Int = if a < 1 then 0 else a+f (a-1); f
 
 val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";
 val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",ConI 12));*)
+
+(*Para executar o Interpretador*)
+(*run(expr)*)
