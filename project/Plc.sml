@@ -56,7 +56,7 @@ fun run (e:expr) =
 
 
 (*Usando testParserCases.sml. (OBS.: Comentar o use Absyn.sml)*)
-(*List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases;*)
+(*List.app (fn ((_,e)) => print(run(e) ^" \n") ) cases;**)
 
 (*Casos Corretos Fórum*)
 (*val expr = If(Prim2("=", ConI 11, ConI 12), ConI 1, ConI 0);
@@ -73,7 +73,12 @@ val expr = Letrec("f",BoolT,"x",BoolT,If (Var "x",ConI 11,ConI 22), Call (Var "f
 val expr = fromString "fun rec f(Int a): Int = if a < 1 then 0 else a+f (a-1); f(5)";
 
 val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";
-val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",ConI 12));*)
+val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",ConI 12));
+
+val expr = fromString "fun twice (Int -> Int f) = fn (Int x) => f(f(x)) end ; fun rec map (Int -> Int f) : ([Int] -> [Int]) = fn ([Int] s) => if ise(s) then s else f(hd(s)) :: map(f)(tl(s)) end ; fun square (Int x) = x * x ; fun inc (Int x) = x + 1 ; var E = ([Int] []) ; var s1 = map (fn (Int x) => 2*x end) (10::20::30::E) ; var s2 = map (twice(inc)) (s1) ; (s1, s2)";
+val expr = fromString "var E = ([Int] []); fun reverse ([Int] s) = { fun rec rev ([Int] s1, [Int] s2): [Int] = match s1 with | E -> s2 | _ -> { var h = hd(s1); var t = tl(s1); rev(t, h::s2) } end ; rev(s, E) }; reverse (1::2::3::E)";
+val expr = fromString "fun inc (Int x) = x + 1; fun add (Int x, Int y) = x + y; fun cadd (Int x) = fn (Int y) => x + y end; var y = add(3, inc(4)); var x = cadd(3)(7-y); var z = x * 3; fun rec fac (Int n) : Int = match n with | 0 -> 1 | 1 -> 1 | _ -> n * fac(n - 1) end ; print x; print y; x :: y :: z :: fac(z) :: ([Int] [])";
+*)
 
 (*ConI*)
 (*val expr = fromString "5";*)
@@ -201,8 +206,5 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*Call*)
 (*val expr = fromString "var x = true; x(5)";*)
 
-
 (*Para executar o Interpretador*)
-run(expr);
-
-(*val expr = fromString "";*)
+(*run(expr);*)
