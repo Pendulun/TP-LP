@@ -74,13 +74,13 @@ fun teval (e:expr,env:((string * plcType) list)) =
 				then
 					BoolT
 				else
-					raise WrongRetType
+					raise UnknownType
 			else if ope = "-" then
 				if (teval (expr,env)) = IntT
 				then
 					IntT
 				else
-					raise WrongRetType
+					raise UnknownType
 			else if ope = "hd" then
 				let
 					val texpr = (teval (expr,env))
@@ -108,7 +108,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 					val texpr = (teval (expr,env))
 				in
 					case texpr of 
-							SeqT(_) => BoolT
+						SeqT(_) => BoolT
 						| _ => raise UnknownType
 				end
 			else if ope = "print" then
@@ -117,7 +117,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 				in
 					ListT([])
 				end
-			else raise NotFunc
+			else raise UnknownType
 		| Prim2(ope,expr1,expr2) =>
 			(
 				if ope = "=" orelse ope = "!=" then 

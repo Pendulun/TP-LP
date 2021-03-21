@@ -105,6 +105,36 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "([[Bool]] [])";*)
 (*val expr = fromString "(Int [])";*)
 
+(*Prim1*)
+(*val expr = fromString "!(if true then false else true)";*)
+(*val expr = fromString "var x = 3; !3";*)
+(*val expr = fromString "var true = 5; !true";*)
+(*val expr = fromString "var b = true; !b";*)
+
+(*val expr = fromString "-true";*)
+(*val expr = fromString "var x = 23; -x";*)
+
+(*val expr = fromString "hd(3::2::1::([Int] []))";*)
+(*val expr = fromString "hd((1, 2, 3))";*)
+(*val expr = fromString "hd(([Int] []))";*)
+(*val expr = fromString "hd(()::()::([Nil] []))";*)
+
+(*val expr = fromString "tl(3::2::1::([Int] []))";*)
+(*val expr = fromString "tl((1, 2, 3))";*)
+(*val expr = fromString "tl(([Int] []))";*)
+(*val expr = fromString "tl(()::()::([Nil] []))";*)
+
+(*val expr = fromString "ise(3::2::1::([Int] []))";*)
+(*val expr = fromString "ise((1, 2, 3))";*)
+(*val expr = fromString "ise(([Int] []))";*)
+(*val expr = fromString "ise(()::()::([Nil] []))";*)
+
+(*val expr = fromString "print(4)";*)
+(*val expr = fromString "print(if true then 3 else 0)";*)
+(*val expr = fromString "print(3::2::1::([Int] []))";*)
+
+
+
 (*Para executar o Interpretador*)
 run(expr);
 
