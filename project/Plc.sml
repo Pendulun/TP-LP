@@ -194,7 +194,11 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "fun rec f(Int x) : Int = f(x-1) ; f(5)";*)
 (*val expr = fromString "fun rec f(Int x) : Bool = x ; f(5)";*)
 
+(*Anon*)
+(*val expr = fromString "(fn(Int x) => -x end)(5)";*)
+(*val expr = fromString "var f = fn(Int x) => -x end; f(5)";*)
 
+(*Call*)
 
 
 (*Para executar o Interpretador*)
