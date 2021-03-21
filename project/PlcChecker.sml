@@ -151,15 +151,11 @@ fun teval (e:expr,env:((string * plcType) list)) =
 						val tv1 = (teval (expr1,env))
 						val tv2 = (teval (expr2,env))
 					in
-						if tv1 = tv2 
+						if tv1 = tv2 andalso tv1 = IntT
 						then 
-							if tv1 = IntT
-							then 
-								IntT
-							else
-								raise UnknownType 
+							IntT
 						else
-							raise NotEqTypes
+							raise UnknownType
 					end) 
 				else if ope = "&&" then
 					(let
