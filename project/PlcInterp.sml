@@ -37,8 +37,7 @@ fun eval (e:expr,env:((string * plcVal) list)) =
 					eval(v1,env)
 				else 
 					eval(v2,env)
-			end
-			
+			end		
 		| Let(variavel, value, prog) => 
 			let
 				val evar = eval(value,env)

@@ -75,5 +75,23 @@ val expr = fromString "fun rec f(Int a): Int = if a < 1 then 0 else a+f (a-1); f
 val expr = fromString "fun rec f (Int x) : Int = if x <= 0 then 1 else x + f(x-1); f(1)";
 val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",ConI 12));*)
 
+(*ConI*)
+(*val expr = fromString "5";*)
+
+(*ConB*)
+(*val expr = fromString "false";*)
+
+(*Var e Let*)
+(*val expr = fromString "var x = 5; x";*)
+(*val expr = fromString "var x = 5; y";*)
+
+(*If*)
+(*val expr = fromString "if true then 1 else 0";*)
+(*val expr = fromString "if 5 then 1 else 0";*)
+(*val expr = fromString "if true then 1 else false";*)
+(*val expr = fromString "var x = 5; if true then x else 0";*)
+
 (*Para executar o Interpretador*)
-(*run(expr)*)
+run(expr);
+
+(*val expr = fromString "";*)
