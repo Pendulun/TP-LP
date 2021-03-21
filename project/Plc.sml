@@ -164,8 +164,17 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "(1::2::3::([Int] []))::(4::5::6::([Int] []))::([[Int]] [])";*)
 (*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; f::g::([Int -> Int] [])";*)
 (*val expr = fromString "1::true::([[Int]] [])";*)
-(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = f::g::([Int -> Int] []); (hd(listaF))(10)";*)
-(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = f::g::([Int -> Int] []); (hd(tl(listaF)))(10)";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var seqF = f::g::([Int -> Int] []); (hd(seqF))(10)";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var seqF = f::g::([Int -> Int] []); (hd(tl(seqF)))(10)";*)
+
+(*Item*)
+(*val expr = fromString "(1,2,3)[2]";*)
+(*val expr = fromString "(1,2,3)[4]";*)
+(*val expr = fromString "true[4]";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = (f,g); (listaF[2])";*)
+(*val expr = fromString "fun f(Int x) = x; fun g(Int x) = -x; var listaF = (f,g); (listaF[2])(3)";*)
+(*val expr = fromString "()[1]";*)
+(*val expr = fromString "(3)[1]";*)
 
 
 
