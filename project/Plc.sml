@@ -91,6 +91,15 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "if true then 1 else false";*)
 (*val expr = fromString "var x = 5; if true then x else 0";*)
 
+(*Nil*)
+(*val expr = fromString "()";*)
+
+(*List*)
+(*val expr = fromString "(1)";*)
+(*val expr = fromString "(1, true)";*)
+(*val expr = fromString "var x = 5; (true, x, 2)";*)
+(*val expr = fromString "(5, if true then true else false, 7)";*)
+
 (*Para executar o Interpretador*)
 run(expr);
 
