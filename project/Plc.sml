@@ -176,6 +176,17 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "()[1]";*)
 (*val expr = fromString "(3)[1]";*)
 
+(*Match*)
+(*val expr = fromString "match 5 with | 5->true | _->false end";*)
+(*val expr = fromString "match 5 with | 5->true | _->false; 7";*)
+(*val expr = fromString "match 5 with | 5->true | _->false end; 7";*)
+(*val expr = fromString "match 5 with end";*)
+(*val expr = fromString "match 5 with | 5->true end";*)
+(*val expr = fromString "match 5 with | 3->true end";*)
+(*val expr = fromString "match 5 with | 5->true | 3->1 end";*)
+(*val expr = fromString "match true with | 5->true | 3->1 end";*)
+(*val expr = fromString "match 5 with | 5->(fn(Int x) => x*2 end) | 3->(fn(Int x) => x*3 end) end";*)
+
 
 
 
