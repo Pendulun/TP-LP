@@ -32,7 +32,7 @@ fun run (e:expr) =
 		end
 	end) handle 
 		(*Checker*)
-		EmptySeq => "***TypeCheckerError: Operacao hd ou tl em sequencia de tipo Nil.***"
+		EmptySeq => "***TypeCheckerError: Sequencia vazia nao suporta a acao.***"
 		| UnknownType => "***TypeCheckerError: Ocorreu erro de tipagem.***"
 		| NotEqTypes => "***TypeCheckerError: Comparacao entre tipos diferentes.***"
 		| WrongRetType => "***TypeCheckerError: Tipo de retorno de funcao nao condiz com seu corpo.***"
