@@ -94,7 +94,7 @@ Comps : Expr COMMA Expr (Expr1::Expr2::[])
 	| Expr COMMA Comps (Expr::Comps)
 
 MatchExpr : END ([])
-| PIPE CondExpr DRARROW Expr ((CondExpr, Expr)::[])
+| PIPE CondExpr DRARROW Expr END((CondExpr, Expr)::[])
 | PIPE CondExpr DRARROW Expr MatchExpr ((CondExpr, Expr)::MatchExpr)
 
 CondExpr : Expr (SOME (Expr))
