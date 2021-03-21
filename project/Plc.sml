@@ -100,6 +100,11 @@ val expr = Letrec("f1",IntT,"x",IntT,Prim2("+",Var "x",ConI 1),Call(Var "f1",Con
 (*val expr = fromString "var x = 5; (true, x, 2)";*)
 (*val expr = fromString "(5, if true then true else false, 7)";*)
 
+(*Eseq*)
+(*val expr = fromString "([Int] [])";*)
+(*val expr = fromString "([[Bool]] [])";*)
+(*val expr = fromString "(Int [])";*)
+
 (*Para executar o Interpretador*)
 run(expr);
 

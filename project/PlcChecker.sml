@@ -67,7 +67,7 @@ fun teval (e:expr,env:((string * plcType) list)) =
 			if (checkIsSeqType (t)) 
 			then 
 				t 
-			else raise WrongRetType
+			else raise UnknownType
 		| Prim1(ope,expr) => 
 			if ope = "!" then
 				if (teval (expr,env)) = BoolT
